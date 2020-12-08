@@ -8,20 +8,20 @@ namespace WebApplicationTechSale.Models
 {
     public class RegisterViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Введите адрес электронной почты")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Адрес электронной почты")]
         public string Email { get; set; }
 
-        [Display(Name = "Имя пользователя в Telegram", Description = "Для получения оповещений")]
+        [Display(Name = "Имя пользователя в Telegram")]
         public string TelegramId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Введите пароль")]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
         public string Password { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Подтвердите пароль")]
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         [Display(Name = "Подтвердите пароль")]

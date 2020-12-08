@@ -1,3 +1,20 @@
-﻿@ViewData["Title"] = "Main Page"
+﻿@{
+    ViewData["Title"] = "Main Page";
+}
 
 <h2 class="display-1">Main Page</h2>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>Вы вошли как @User.Identity.Name</p>
+
+    <form method="post" asp-controller="Account" asp-action="Logout">
+        <input type="submit" value="Выход" />
+    </form>
+}
+else
+{
+    <p>Выполните вход в аккаунт</p>
+    <a asp-controller="Account" asp-action="Login">Вход</a>
+    <a asp-controller="Account" asp-action="Register">Регистрация</a>
+}
