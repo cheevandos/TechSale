@@ -1,0 +1,28 @@
+﻿@model WebApplicationTechSale.Models.RegisterViewModel
+<h2>Регистрация нового пользователя</h2>
+<form method="post" asp-controller="Account" asp-action="Register">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        <label asp-for="Email"></label><br />
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <label asp-for="TelegramId"></label><br />
+        <input asp-for="TelegramId" />
+        <span asp-validation-for="TelegramId"></span>
+    </div>
+    <div>
+        <label asp-for="Password"></label><br />
+        <input asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+        <label asp-for="PasswordConfirmation"></label><br />
+        <input asp-for="PasswordConfirmation" />
+        <span asp-validation-for="PasswordConfirmation"></span>
+    </div>
+    <div>
+        <input type="submit" value="Регистрация" />
+    </div>
+</form>
