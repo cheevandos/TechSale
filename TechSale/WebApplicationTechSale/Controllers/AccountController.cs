@@ -23,6 +23,10 @@ namespace WebApplicationTechSale.Controllers
         [HttpGet]
         public IActionResult Login(string returnUrl)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
 
@@ -64,6 +68,10 @@ namespace WebApplicationTechSale.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
