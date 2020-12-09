@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApplicationTechSale.Models
+namespace DataAccessLogic.DatabaseModels
 {
     [Owned]
     public class PriceInfo

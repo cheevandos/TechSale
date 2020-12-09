@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApplicationTechSale.Models
+namespace DataAccessLogic.DatabaseModels
 {
     public class Note
     {

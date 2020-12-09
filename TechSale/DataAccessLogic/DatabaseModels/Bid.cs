@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApplicationTechSale.Models
+namespace DataAccessLogic.DatabaseModels
 {
     public class Bid
     {

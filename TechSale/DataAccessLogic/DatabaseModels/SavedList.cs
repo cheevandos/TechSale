@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebApplicationTechSale.Models
+namespace DataAccessLogic.DatabaseModels
 {
     public class SavedList
     {
