@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,17 @@ namespace WebApplicationTechSale.Controllers
         }
 
         [HttpGet]
-        public IActionResult UsersList()
+        public async Task<IActionResult> UsersList()
         {
-            return View(userManager.Users.ToList());
+            List<User> users = new List<User>();
+            foreach (User user in await userManager.Users.ToListAsync())
+            {
+                if (await userManager.IsInRoleAsync(user, "moderator"))
+                {
+                    users.Add(user);
+                }
+            }
+            return View(users);
         }
 
         [HttpGet]

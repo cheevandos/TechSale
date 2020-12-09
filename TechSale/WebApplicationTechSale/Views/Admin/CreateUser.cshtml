@@ -3,23 +3,31 @@
     ViewData["Title"] = "Create Moder";
 }
 
-<p>Создание модератора</p>
-
-<form asp-action="CreateUser" asp-controller="Admin">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="Email" class="control-label"></label>
-        <input asp-for="Email" class="form-control" />
+<div class="container col-sm-10 offset-sm-1 col-md-6 offset-md-3 col-xl-4 offset-xl-4 col-12">
+    <div class="card my-4">
+        <div class="card-body">
+            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-info btn-block">Вернуться&nbsp;на&nbsp;главную</a>
+            <h5 class="text-center my-4">Создайте учетную&nbsp;запись модератора</h5>
+            <form asp-action="CreateUser" asp-controller="Admin">
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control">
+                    <ul class="pl-3">
+                        <li><small>не менее 8 символов</small></li>
+                        <li><small>минимум 1 буква в верхнем регистре</small></li>
+                        <li><small>минимум 1 цифра</small></li>
+                    </ul>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PasswordConfirmation"></label>
+                    <input asp-for="PasswordConfirmation" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-dark btn-block btn-lg">Создать учетную запись</button>
+            </form>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="Password" class="control-label"></label>
-        <input asp-for="Password" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="PasswordConfirmation" class="control-label"></label>
-        <input asp-for="PasswordConfirmation" class="form-control" />
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Добавить" class="btn btn-outline-success" />
-    </div>
-</form>
+</div>
