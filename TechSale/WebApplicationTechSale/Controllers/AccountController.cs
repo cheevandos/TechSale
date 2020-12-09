@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DataAccessLogic.DatabaseModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -81,6 +82,7 @@ namespace WebApplicationTechSale.Controllers
                 var registerResult = await userManager.CreateAsync(user, model.Password);
                 if (registerResult.Succeeded)
                 {
+                    await userManager.AddToRoleAsync(user, "regular user");
                     await signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }

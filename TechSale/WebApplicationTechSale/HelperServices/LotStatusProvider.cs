@@ -1,6 +1,6 @@
 ﻿namespace WebApplicationTechSale.HelperServices
 {
-    public static class GetLotStatus
+    public static class LotStatusProvider
     {
         public static string GetOnModerationStatus()
         {

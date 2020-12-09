@@ -1,0 +1,25 @@
+﻿@using DataAccessLogic.DatabaseModels;
+@model IEnumerable<User>
+@{ 
+    ViewData["Title"] = "Moders List";
+}
+
+<p>Список модераторов:</p>
+
+<p>
+    <a class="btn btn-primary" asp-action="CreateUser">Добавить модератора</a>
+</p>
+
+<table class="table table-bordered">
+    <tbody>
+        <tr>
+            <th>Email</th>
+        </tr>
+        @foreach (User user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+            </tr>
+        }
+    </tbody>
+</table>

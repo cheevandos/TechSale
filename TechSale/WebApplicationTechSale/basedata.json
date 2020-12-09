@@ -1,0 +1,8 @@
+{
+  "BaseRoles": [ "admin", "regular user", "moderator" ],
+
+  "AdminData": {
+    "Email": "admin@mail.ru",
+    "Password": "5Tu@quoe"
+  }
+}

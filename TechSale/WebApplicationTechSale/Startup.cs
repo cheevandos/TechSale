@@ -1,4 +1,5 @@
 using DataAccessLogic;
+using DataAccessLogic.DatabaseModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -24,7 +25,12 @@ namespace WebApplicationTechSale
             services.AddDbContext<ApplicationContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationContext>();
+            services.AddIdentity<User, IdentityRole>(options => 
+            {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            })
+            .AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddControllersWithViews();
         }
