@@ -1,28 +1,36 @@
 ﻿@model WebApplicationTechSale.Models.RegisterViewModel
-<h2>Регистрация нового пользователя</h2>
-<form method="post" asp-controller="Account" asp-action="Register">
-    <div asp-validation-summary="ModelOnly"></div>
-    <div>
-        <label asp-for="Email"></label><br />
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
+
+<div class="container col-sm-10 offset-sm-1 col-md-6 offset-md-3 col-xl-4 offset-xl-4 col-12">
+    <div class="card my-4">
+        <div class="card-body">
+            <a class="btn btn-outline-info btn-block" asp-action="Index" asp-controller="Home">Вернуться&nbsp;на&nbsp;главную</a>
+            <h5 class="text-center my-4">Создайте новую учетную&nbsp;запись</h5>
+            <form method="post" asp-action="Register" asp-controller="Account">
+                <div class="alert alert-danger" asp-validation-summary="ModelOnly"></div>
+                <div class="form-floating">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control">
+                    <span class="text-danger" asp-validation-for="Email">
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TelegramId"></label>
+                    <input asp-for="TelegramId" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control">
+                    <span class="text-danger" asp-validation-for="Password"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PasswordConfirmation"></label>
+                    <input asp-for="PasswordConfirmation" class="form-control">
+                    <span class="text-danger text-sm-left" asp-validation-for="PasswordConfirmation"></span>
+                </div>
+                <button type="submit" class="btn btn-dark btn-block btn-lg">Создать учетную запись</button>
+            </form>
+            <h5 class="text-center my-4">или&nbsp;войдите в&nbsp;существующую</h5>
+            <a asp-action="Login" asp-controller="Account" class="btn btn-secondary btn-block btn-lg">Выполнить вход</a>
+        </div>
     </div>
-    <div>
-        <label asp-for="TelegramId"></label><br />
-        <input asp-for="TelegramId" />
-        <span asp-validation-for="TelegramId"></span>
-    </div>
-    <div>
-        <label asp-for="Password"></label><br />
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
-    </div>
-    <div>
-        <label asp-for="PasswordConfirmation"></label><br />
-        <input asp-for="PasswordConfirmation" />
-        <span asp-validation-for="PasswordConfirmation"></span>
-    </div>
-    <div>
-        <input type="submit" value="Регистрация" />
-    </div>
-</form>
+</div>
