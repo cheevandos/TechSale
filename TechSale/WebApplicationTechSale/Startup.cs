@@ -1,5 +1,7 @@
 using DataAccessLogic;
+using DataAccessLogic.CrudLogic;
 using DataAccessLogic.DatabaseModels;
+using DataAccessLogic.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -24,6 +26,8 @@ namespace WebApplicationTechSale
         {
             services.AddDbContext<ApplicationContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddTransient<ICrudLogic<AuctionLot>, AuctionLotLogic>();
 
             services.AddIdentity<User, IdentityRole>(options => 
             {

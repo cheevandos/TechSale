@@ -3,15 +3,14 @@
 <div class="container col-sm-10 offset-sm-1 col-md-6 offset-md-3 col-xl-4 offset-xl-4 col-12">
     <div class="card my-4">
         <div class="card-body">
-            <a class="btn btn-outline-info btn-block" asp-action="Index" asp-controller="Home">Вернуться&nbsp;на&nbsp;главную</a>
+            <a class="btn btn-outline-info" asp-action="Index" asp-controller="Home">Вернуться&nbsp;на&nbsp;главную</a>
             <h5 class="text-center my-4">Создайте новую учетную&nbsp;запись</h5>
             <form method="post" asp-action="Register" asp-controller="Account">
                 <div class="alert alert-danger" asp-validation-summary="ModelOnly"></div>
-                <div class="form-floating">
+                <div class="form-group">
                     <label asp-for="Email"></label>
                     <input asp-for="Email" class="form-control">
-                    <span class="text-danger" asp-validation-for="Email">
-                    </span>
+                    <span class="text-danger" asp-validation-for="Email"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="TelegramId"></label>

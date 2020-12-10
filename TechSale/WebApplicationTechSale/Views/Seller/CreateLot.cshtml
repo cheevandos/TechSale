@@ -1,0 +1,45 @@
+﻿@model CreateLotViewModel
+@{
+    ViewData["Title"] = "Новый лот";
+}
+
+<form method="post" asp-action="CreateLot" asp-controller="Seller" enctype="multipart/form-data">
+    <div class="alert alert-danger" asp-validation-summary="ModelOnly"></div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control">
+        <span class="text-danger" asp-validation-for="Name">
+        </span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control">
+        <span class="text-danger" asp-validation-for="Description"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="StartPrice"></label>
+        <input asp-for="StartPrice" class="form-control">
+        <span class="text-danger" asp-validation-for="StartPrice"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BidStep"></label>
+        <input asp-for="BidStep" class="form-control">
+        <span class="text-danger text-sm-left" asp-validation-for="BidStep"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="StartDate"></label>
+        <input asp-for="StartDate" class="form-control">
+        <span class="text-danger" asp-validation-for="StartDate"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EndDate"></label>
+        <input asp-for="EndDate" class="form-control">
+        <span class="text-danger" asp-validation-for="EndDate"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Photo"></label>
+        <input asp-for="Photo" class="form-control" type="file">
+        <span class="text-danger" asp-validation-for="Photo"></span>
+    </div>
+    <button type="submit" class="btn btn-dark btn-block btn-lg">Добавить лот</button>
+</form>

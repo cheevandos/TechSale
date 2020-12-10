@@ -1,15 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccessLogic.DatabaseModels
 {
     public class Note
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         [Required(ErrorMessage = "Введите текст сообщения")]
         [MaxLength(250, ErrorMessage = "Слишком длинное сообщение")]
         public string Text { get; set; }
 
-        public int AuctionLotId { get; set; }
+        public string AuctionLotId { get; set; }
         public AuctionLot AuctionLot { get; set; }
     }
 }

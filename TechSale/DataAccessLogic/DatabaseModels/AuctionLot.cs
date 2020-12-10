@@ -6,7 +6,7 @@ namespace DataAccessLogic.DatabaseModels
 {
     public class AuctionLot
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         [Required(ErrorMessage = "Введите название")]
         [MaxLength(100, ErrorMessage = "Слишком много символов")]
         public string Name { get; set; }

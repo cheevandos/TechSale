@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLogic.DatabaseModels
 {
@@ -7,9 +8,9 @@ namespace DataAccessLogic.DatabaseModels
     public class PriceInfo
     {
         [Required(ErrorMessage = "Укажите стартовую цену")]
-        public decimal StartPrice { get; set; }
-        public decimal CurrentPrice { get; set; }
+        public int StartPrice { get; set; }
+        public int CurrentPrice { get; set; }
         [Required(ErrorMessage = "Укажите шаг ставки")]
-        public decimal BidStep { get; set; }
+        public int BidStep { get; set; }
     }
 }
