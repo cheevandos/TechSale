@@ -15,7 +15,7 @@ namespace WebApplicationTechSale.Models
         [Display(Name = "Пароль")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        [Display(Name = "Запомнить")]
+        [Display(Name = "Не выходить из системы")]
         public bool RememberMe { get; set; }
         public string ReturnUrl { get; set; }
     }

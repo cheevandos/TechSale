@@ -1,30 +1,35 @@
 ﻿@model WebApplicationTechSale.Models.LoginViewModel
 
-<div class="container col-sm-10 offset-sm-1 col-md-6 offset-md-3 col-xl-4 offset-xl-4 col-12">
-    <div class="card my-4">
-        <div class="card-body">
-            <a class="btn btn-outline-info btn-block" asp-action="Index" asp-controller="Home">Вернуться&nbsp;на&nbsp;главную</a>
-            <h5 class="text-center my-4">Выполните вход в&nbsp;учетную&nbsp;запись</h5>
-            <form method="post" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">
-                <div asp-validation-summary="ModelOnly"></div>
-                <div class="form-group">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card my-3">
+                <div class="card-body">
+                    <h5 class="card-title text-center my-3">Выполните вход в&nbsp;учетную&nbsp;запись</h5>
+                    <form method="post" asp-action="Login" asp-controller="Account">
+                        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Адрес электронной почты</label>
+                            <input asp-for="Email" class="form-control">
+                            <span class="text-danger" asp-validation-for="Email"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">Пароль</label>
+                            <input asp-for="Password" class="form-control">
+                            <span class="text-danger" asp-validation-for="Password"></span>
+                        </div>
+                        <div class="form-check mb-3">
+                            <label asp-for="RememberMe" class="form-check-label"></label>
+                            <input asp-for="RememberMe" class="form-check-input">
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-dark">Войти в учетную запись</button>
+                        </div>
+                    </form>
+                    <h5 class="my-3">Еще не зарегистрированы?</h5>
+                    <a class="btn btn-secondary" asp-action="Register" asp-controller="Account">Создать учетную запись</a>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control">
-                </div>
-                <div class="form-group">
-                    <div class="form-check">
-                        <input asp-for="RememberMe" class="form-check-input">
-                        <label asp-for="RememberMe" class="form-check-label"></label>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-secondary btn-block btn-lg">Войти</button>
-            </form>
-            <h5 class="text-center my-4">Или&nbsp;создайте&nbsp;новую</h5>
-            <a class="btn btn-dark btn-block btn-lg" asp-action="Register" asp-controller="Account">Создать учетную запись</a>
+            </div>
         </div>
     </div>
 </div>
