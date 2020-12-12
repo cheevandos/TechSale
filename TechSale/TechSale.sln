@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplicationTechSale", "W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLogic", "DataAccessLogic\DataAccessLogic.csproj", "{C694C21D-8641-4BF4-A0D7-777401A09270}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechSaleTelegramBot", "TechSaleTelegramBot\TechSaleTelegramBot.csproj", "{79E28554-3549-4585-B7FA-CA3E6A77D2AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechSaleTelegramBot", "TechSaleTelegramBot\TechSaleTelegramBot.csproj", "{79E28554-3549-4585-B7FA-CA3E6A77D2AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

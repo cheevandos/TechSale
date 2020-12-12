@@ -1,0 +1,15 @@
+﻿@model WebApplicationTechSale.Models.PersonalAccountViewModel
+
+<form method="get" asp-action="Personal" asp-controller="Account">
+    <div>
+        <label asp-for="TelegramId" class="form-label"></label>
+        : @Model.TelegramId
+    </div>
+    <div>
+        <label asp-for="Email" class="form-label"></label>
+        : @Model.Email
+    </div>
+</form>
+<p>
+    <a class="btn btn-primary" asp-action="ChangePassword" asp-route-id="@User.Identity">Изменить пароль</a>
+</p>
