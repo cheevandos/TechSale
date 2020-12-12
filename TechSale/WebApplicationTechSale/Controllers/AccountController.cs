@@ -84,7 +84,7 @@ namespace WebApplicationTechSale.Controllers
                 {
                     Email = model.Email,
                     UserName = model.Email,
-                    TelegramId = string.IsNullOrWhiteSpace(model.TelegramId) ? 
+                    TelegramUsername = string.IsNullOrWhiteSpace(model.TelegramId) ? 
                     string.Empty : model.TelegramId
                 };
                 var registerResult = await userManager.CreateAsync(user, model.Password);

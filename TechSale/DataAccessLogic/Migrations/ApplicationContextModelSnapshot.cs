@@ -178,7 +178,10 @@ namespace DataAccessLogic.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TelegramId")
+                    b.Property<string>("TelegramChatId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelegramUsername")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")

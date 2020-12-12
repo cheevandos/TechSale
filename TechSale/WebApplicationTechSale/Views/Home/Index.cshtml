@@ -9,7 +9,17 @@
     <p>Вы вошли как @User.Identity.Name</p>
 
     <form method="post" asp-controller="Account" asp-action="Logout">
-        <input type="submit" value="Выход" />
+        <button type="submit" class="btn btn-primary">Выйти из учетной записи</button>
+    </form>
+    <form method="post" asp-controller="Home" asp-action="SendMessageToBot">
+        <div class="mb-3">
+            <label class="form-label">Отправить сообщение боту:</label>
+            <input class="form-control" name="msg">
+            <div class="form-text">Не более 150 символов</div>
+        </div>
+        <div class="my-3">
+            <button type="submit" class="btn btn-primary" >Отправить</button>
+        </div>
     </form>
 }
 else

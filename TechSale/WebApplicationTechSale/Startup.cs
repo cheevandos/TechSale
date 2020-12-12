@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TechSaleTelegramBot;
+using WebApplicationTechSale.HelperServices;
 using WebApplicationTechSale.Models;
 
 namespace WebApplicationTechSale
@@ -28,6 +30,9 @@ namespace WebApplicationTechSale
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient<ICrudLogic<AuctionLot>, AuctionLotLogic>();
+            services.AddTransient<ICrudLogic<User>, UserLogic>();
+            services.AddSingleton<IBot, TechSaleBot>();
+            services.AddHostedService<BotHostService>();
 
             services.AddIdentity<User, IdentityRole>(options => 
             {

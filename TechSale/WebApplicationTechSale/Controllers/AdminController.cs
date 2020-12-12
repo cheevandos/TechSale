@@ -24,14 +24,7 @@ namespace WebApplicationTechSale.Controllers
         [HttpGet]
         public async Task<IActionResult> UsersList()
         {
-            List<User> users = new List<User>();
-            foreach (User user in await userManager.Users.ToListAsync())
-            {
-                if (await userManager.IsInRoleAsync(user, "moderator"))
-                {
-                    users.Add(user);
-                }
-            }
+            IEnumerable<User> users = await userManager.GetUsersInRoleAsync("moderator");
             return View(users);
         }
 

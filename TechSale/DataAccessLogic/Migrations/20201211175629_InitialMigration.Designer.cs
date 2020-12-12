@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLogic.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20201210120009_InitialMigration")]
+    [Migration("20201211175629_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -180,7 +180,10 @@ namespace DataAccessLogic.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TelegramId")
+                    b.Property<string>("TelegramChatId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelegramUsername")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
