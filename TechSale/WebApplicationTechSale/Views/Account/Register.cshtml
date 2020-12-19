@@ -1,42 +1,40 @@
 ﻿@model WebApplicationTechSale.Models.RegisterViewModel
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card my-3">
-                <div class="card-body">
-                    <h5 class="card-title text-center my-3">Создайте новую учетную&nbsp;запись</h5>
-                    <form method="post" asp-action="Register" asp-controller="Account">
-                        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-                        <div class="mb-3">
-                            <label asp-for="Email" class="form-label"></label>
-                            <input asp-for="Email" class="form-control">
-                            <div class="form-text">Например, mail@example.com</div>
-                            <span class="text-danger" asp-validation-for="Email"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="TelegramId" class="form-label"></label>
-                            <input asp-for="TelegramId" class="form-control">
-                            <div class="form-text">Перейдите в настройки Telegram, имя пользователя начинается с @@</div>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="Password" class="form-label"></label>
-                            <input asp-for="Password" class="form-control">
-                            <div class="form-text">Не менее 6 символов, не менее 1 цифры</div>
-                            <span class="text-danger" asp-validation-for="Password"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="PasswordConfirmation" class="form-label"></label>
-                            <input asp-for="PasswordConfirmation" class="form-control">
-                            <span class="text-danger" asp-validation-for="PasswordConfirmation"></span>
-                        </div>
-                        <div class="mb-3">
-                            <button type="submit" class="btn btn-dark btn-block">Создать учетную запись</button>
-                        </div>
-                    </form>
-                    <h5 class="my-3">Уже зарегистрированы?</h5>
-                    <a class="btn btn-secondary" asp-action="Login" asp-controller="Account">Выполнить вход в учетную запись</a>
-                </div>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card my-3">
+            <div class="card-body">
+                <h5 class="card-title text-center my-3">Создайте новую учетную&nbsp;запись</h5>
+                <form method="post" asp-action="Register" asp-controller="Account">
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control">
+                        <div class="form-text">Например, mail@example.com</div>
+                        <span class="text-danger" asp-validation-for="Email"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="TelegramId" class="form-label"></label>
+                        <input asp-for="TelegramId" class="form-control">
+                        <div class="form-text">Перейдите в настройки Telegram, имя пользователя начинается с @@</div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control">
+                        <div class="form-text">Не менее 6 символов, не менее 1 цифры</div>
+                        <span class="text-danger" asp-validation-for="Password"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="PasswordConfirmation" class="form-label"></label>
+                        <input asp-for="PasswordConfirmation" class="form-control">
+                        <span class="text-danger" asp-validation-for="PasswordConfirmation"></span>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-dark btn-block">Создать учетную запись</button>
+                    </div>
+                </form>
+                <h5 class="my-3">Уже зарегистрированы?</h5>
+                <a class="btn btn-secondary" asp-action="Login" asp-controller="Account">Выполнить вход в учетную запись</a>
             </div>
         </div>
     </div>

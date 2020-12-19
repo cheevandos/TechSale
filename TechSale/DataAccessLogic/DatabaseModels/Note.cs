@@ -9,6 +9,7 @@ namespace DataAccessLogic.DatabaseModels
         [Required(ErrorMessage = "Введите текст сообщения")]
         [MaxLength(250, ErrorMessage = "Слишком длинное сообщение")]
         public string Text { get; set; }
+        public DateTime Date { get; set; }
 
         public string AuctionLotId { get; set; }
         public AuctionLot AuctionLot { get; set; }

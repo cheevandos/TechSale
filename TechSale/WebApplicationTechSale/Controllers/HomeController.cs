@@ -1,10 +1,13 @@
 ﻿using DataAccessLogic.DatabaseModels;
+using DataAccessLogic.HelperServices;
 using DataAccessLogic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TechSaleTelegramBot;
+using WebApplicationTechSale.Models;
 
 namespace WebApplicationTechSale.Controllers
 {
@@ -12,9 +15,11 @@ namespace WebApplicationTechSale.Controllers
     {
         private readonly IBot bot;
         private readonly ICrudLogic<User> userLogic;
+        private readonly IPagination<AuctionLot> lotLogic;
 
-        public HomeController(IBot bot, ICrudLogic<User> userLogic)
+        public HomeController(IPagination<AuctionLot> lotLogic, IBot bot, ICrudLogic<User> userLogic)
         {
+            this.lotLogic = lotLogic;
             this.bot = bot;
             this.userLogic = userLogic;
         }
@@ -40,6 +45,19 @@ namespace WebApplicationTechSale.Controllers
             }
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Lots(int page = 1)
+        {
+            List<AuctionLot> lotsToDisplay = await lotLogic.GetPage(page);
+            int lotsCount = await lotLogic.GetCount();
+
+            return View(new AuctionLotsViewModel()
+            {
+                PageViewModel = new PageViewModel(lotsCount, page, ApplicationConstantsProvider.GetPageSize()),
+                AuctionLots = lotsToDisplay
+            });
         }
     }
 }

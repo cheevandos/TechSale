@@ -1,0 +1,29 @@
+﻿@using DataAccessLogic.DatabaseModels;
+
+@model AuctionLotsViewModel
+
+@{
+    ViewData["Title"] = "Список лотов";
+}
+
+@addTagHelper *, WebApplicationTechSale
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 my-lg-2">
+    @foreach (AuctionLot auctionLot in Model.AuctionLots)
+    {
+        <div class="col">
+            <div class="card h-100 ">
+                <img src="@auctionLot.PhotoSrc" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><a>Лот: @auctionLot.Name</a></h5>
+                    <p class="card-text">@auctionLot.Name</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Текущая цена: </b>@auctionLot.PriceInfo.CurrentPrice руб.</li>
+                    <li class="list-group-item"><b>Продавец: @auctionLot.User.UserName</b></li>
+                </ul>
+            </div>
+        </div>
+    }
+</div>
+<pagination page-model="@Model.PageViewModel" page-action="Lots"></pagination>

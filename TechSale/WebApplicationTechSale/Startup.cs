@@ -31,8 +31,9 @@ namespace WebApplicationTechSale
 
             services.AddTransient<ICrudLogic<AuctionLot>, AuctionLotLogic>();
             services.AddTransient<ICrudLogic<User>, UserLogic>();
+            services.AddTransient<IPagination<AuctionLot>, AuctionLotPaginationLogic>();
             services.AddSingleton<IBot, TechSaleBot>();
-            services.AddHostedService<BotHostService>();
+            //services.AddHostedService<BotHostService>();
 
             services.AddIdentity<User, IdentityRole>(options => 
             {
@@ -67,7 +68,7 @@ namespace WebApplicationTechSale
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Lots}/{id?}");
             });
         }
     }

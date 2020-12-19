@@ -66,17 +66,16 @@ namespace WebApplicationTechSale.Controllers
                     }
                 };
 
-                string path = $"{environment.WebRootPath}/images/{User.Identity.Name}/" +
-                              $"{model.Name}";
+                string path = $"/images/{User.Identity.Name}/{model.Name}";
 
-                if (!Directory.Exists(path))
+                if (!Directory.Exists($"{environment.WebRootPath + path}"))
                 {
-                    Directory.CreateDirectory(path);
+                    Directory.CreateDirectory($"{environment.WebRootPath + path}");
                 }
 
                 path += $"/{model.Photo.FileName}";
 
-                using (FileStream fs = new FileStream(path, FileMode.Create))
+                using (FileStream fs = new FileStream($"{environment.WebRootPath + path}", FileMode.Create))
                 {
                     await model.Photo.CopyToAsync(fs);
                 }
