@@ -5,7 +5,7 @@ namespace DataAccessLogic.Interfaces
 {
     public interface IPagination<TModel>
     {
-        Task<List<TModel>> GetPage(int pageNumber);
+        Task<List<TModel>> GetPage(int pageNumber, TModel model);
         Task<int> GetCount();
     }
 }

@@ -24,12 +24,6 @@ namespace WebApplicationTechSale.Controllers
             this.userLogic = userLogic;
         }
 
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         [Authorize]
         [HttpPost]
         public IActionResult SendMessageToBot(string msg)
@@ -50,7 +44,11 @@ namespace WebApplicationTechSale.Controllers
         [HttpGet]
         public async Task<IActionResult> Lots(int page = 1)
         {
-            List<AuctionLot> lotsToDisplay = await lotLogic.GetPage(page);
+            List<AuctionLot> lotsToDisplay = await lotLogic.GetPage(page, new AuctionLot
+            {
+                Status = LotStatusProvider.GetAcceptedStatus()
+            });
+
             int lotsCount = await lotLogic.GetCount();
 
             return View(new AuctionLotsViewModel()

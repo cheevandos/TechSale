@@ -31,7 +31,8 @@ namespace WebApplicationTechSale
 
             services.AddTransient<ICrudLogic<AuctionLot>, AuctionLotLogic>();
             services.AddTransient<ICrudLogic<User>, UserLogic>();
-            services.AddTransient<IPagination<AuctionLot>, AuctionLotPaginationLogic>();
+            services.AddTransient<ICrudLogic<Note>, NoteLogic>();
+            services.AddTransient<IPagination<AuctionLot>, AuctionLotLogic>();
             services.AddSingleton<IBot, TechSaleBot>();
             //services.AddHostedService<BotHostService>();
 

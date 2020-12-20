@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLogic.CrudLogic
 {
-    public class AuctionLotLogic : ICrudLogic<AuctionLot>
+    public class AuctionLotLogic : ICrudLogic<AuctionLot>, IPagination<AuctionLot>
     {
         private readonly ApplicationContext context;
 
@@ -75,12 +75,19 @@ namespace DataAccessLogic.CrudLogic
             {
                 throw new Exception("Лот не найден");
             }
-
-            toUpdate.Name = model.Name;
-            toUpdate.Description = model.Description;
-            toUpdate.StartDate = model.StartDate;
-            toUpdate.EndDate = model.EndDate;
-            toUpdate.PhotoSrc = model.PhotoSrc;
+            
+            if (!string.IsNullOrWhiteSpace(model.Status))
+            {
+                toUpdate.Status = model.Status;
+            }
+            else
+            {
+                toUpdate.Name = model.Name;
+                toUpdate.Description = model.Description;
+                toUpdate.StartDate = model.StartDate;
+                toUpdate.EndDate = model.EndDate;
+                toUpdate.PhotoSrc = model.PhotoSrc;
+            }
 
             await context.SaveChangesAsync();
         }
@@ -88,10 +95,25 @@ namespace DataAccessLogic.CrudLogic
         public List<AuctionLot> Read(AuctionLot model)
         {
             return context.AuctionLots.Where(lot => model == null
-            || lot.User.UserName == model.User.UserName
-            || lot.Id == model.Id
-            || lot.Status == LotStatusProvider.GetOnModerationStatus())
+            || model.User != null && !string.IsNullOrWhiteSpace(model.User.UserName) && lot.User.UserName == model.User.UserName
+            || !string.IsNullOrWhiteSpace(model.Id) && lot.Id == model.Id
+            || !string.IsNullOrWhiteSpace(model.Status) && lot.Status == model.Status)
                 .ToList();
+        }
+
+        public async Task<List<AuctionLot>> GetPage(int pageNumber, AuctionLot model)
+        {
+            return await context.AuctionLots.Include(lot => lot.User).Include(lot =>
+            lot.PriceInfo).Where(lot => model == null || lot.Status == model.Status)
+            .Skip((pageNumber <= 0 ? 0 : pageNumber - 1) *
+            ApplicationConstantsProvider.GetPageSize())
+            .Take(ApplicationConstantsProvider.GetPageSize())
+            .ToListAsync();
+        }
+
+        public async Task<int> GetCount()
+        {
+            return await context.AuctionLots.CountAsync();
         }
     }
 }

@@ -19,20 +19,49 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item mx-1 my-1">
-                            <a class="btn btn-lg btn-outline-light" asp-action="Lots" asp-controller="Home"><div class="text-dark">Главная</div></a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                        {
+                            <li class="nav-item mx-1 my-1">
+                                <a class="btn btn-lg btn-outline-light" asp-action="UsersList" asp-controller="Admin"><div class="text-dark">Список модераторов</div></a>
+                            </li>
+                        }
+                        else if (User.Identity.IsAuthenticated && User.IsInRole("moderator"))
+                        {
+                            <li class="nav-item mx-1 my-1">
+                                <a class="btn btn-lg btn-outline-light" asp-action="Lots" asp-controller="Moderator"><div class="text-dark">Список лотов</div></a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item mx-1 my-1">
+                                <a class="btn btn-lg btn-outline-light" asp-action="Lots" asp-controller="Home"><div class="text-dark">Главная</div></a>
+                            </li>
+                        }
                         <li class="nav-item mx-1 my-1">
                             <a class="btn btn-lg btn-outline-light" asp-action="Rules" asp-controller="Home"><div class="text-dark">Правила аукциона</div></a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item ms-1 my-1">
-                            <a class="btn btn-lg btn-outline-light" asp-action="Login" asp-controller="Account"><div class="text-dark">Вход</div></a>
-                        </li>
-                        <li class="nav-item ms-1 my-1">
-                            <a class="btn btn-lg btn-outline-light" asp-action="Register" asp-controller="Account"><div class="text-dark">Регистрация</div></a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item ms-1 my-1">
+                                <a class="btn btn-lg btn-outline-light" asp-action="Personal" asp-controller="Account"><div class="text-dark">Личный кабинет</div></a>
+                            </li>
+                            <li class="nav-item ms-1 my-1">
+                                <form method="post" asp-controller="Account" asp-action="Logout">
+                                    <button type="submit" class="btn btn-lg btn-outline-secondary">Выход</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item ms-1 my-1">
+                                <a class="btn btn-lg btn-outline-light" asp-action="Login" asp-controller="Account"><div class="text-dark">Вход</div></a>
+                            </li>
+                            <li class="nav-item ms-1 my-1">
+                                <a class="btn btn-lg btn-outline-light" asp-action="Register" asp-controller="Account"><div class="text-dark">Регистрация</div></a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

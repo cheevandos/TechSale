@@ -1,4 +1,5 @@
 ﻿using DataAccessLogic.DatabaseModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,6 +20,8 @@ namespace WebApplicationTechSale.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
+
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {
@@ -35,6 +38,7 @@ namespace WebApplicationTechSale.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
@@ -72,6 +76,7 @@ namespace WebApplicationTechSale.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Personal()
         {
@@ -89,7 +94,7 @@ namespace WebApplicationTechSale.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Lots", "Home");
             }
             return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
@@ -110,7 +115,19 @@ namespace WebApplicationTechSale.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        User user = await userManager.FindByEmailAsync(model.Email);
+                        if (await userManager.IsInRoleAsync(user, "admin"))
+                        {
+                            return RedirectToAction("UsersList", "Admin");
+                        }
+                        if (await userManager.IsInRoleAsync(user, "moderator"))
+                        {
+                            return RedirectToAction("Lots", "Moderator");
+                        }
+                        if (await userManager.IsInRoleAsync(user, "regular user"))
+                        {
+                            return RedirectToAction("Lots", "Home");
+                        }
                     }
                 }
                 else
@@ -126,7 +143,7 @@ namespace WebApplicationTechSale.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Lots", "Home");
         }
 
         [HttpGet]
@@ -134,7 +151,7 @@ namespace WebApplicationTechSale.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Lots", "Home");
             }
             return View();
         }
@@ -156,7 +173,7 @@ namespace WebApplicationTechSale.Controllers
                 {
                     await userManager.AddToRoleAsync(user, "regular user");
                     await signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Lots", "Home");
                 }
                 else
                 {
