@@ -6,5 +6,15 @@
         {
             return 6;
         }
+
+        public static int GetShortRedirectionTime()
+        {
+            return 5;
+        }
+
+        public static int GetLongRedirectionTime()
+        {
+            return 10;
+        }
     }
 }

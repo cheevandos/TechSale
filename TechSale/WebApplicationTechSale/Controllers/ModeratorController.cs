@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApplicationTechSale.HelperServices;
 using WebApplicationTechSale.Models;
 
 namespace WebApplicationTechSale.Controllers
@@ -56,7 +57,10 @@ namespace WebApplicationTechSale.Controllers
                 {
                     Id = id
                 })?.First();
-                return View(lotToCheck);
+                return View(new LotModerationModel
+                { 
+                    AuctionLot = lotToCheck
+                });
             }
             return NotFound();
         }
@@ -71,29 +75,40 @@ namespace WebApplicationTechSale.Controllers
                     Id = id,
                     Status = LotStatusProvider.GetAcceptedStatus()
                 });
-                return RedirectToAction("Lots", "Moderator");
+                return View("Redirect", new RedirectModel
+                {
+                    InfoMessages = RedirectionMessageProvider.LotAcceptedMessages(),
+                    SecondsToRedirect = ApplicationConstantsProvider.GetLongRedirectionTime(),
+                    RedirectUrl = "/Moderator/Lots"
+                });
             }
             return NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> RejectLot(RejectLotModel model)
+        public async Task<IActionResult> RejectLot(LotModerationModel model)
         {
             if (ModelState.IsValid)
             {
                 await crudLotLogic.Update(new AuctionLot
                 {
-                    Id = model.Id,
+                    Id = model.AuctionLot.Id,
                     Status = LotStatusProvider.GetRejectedStatus()
                 });
                 await crudNoteLogic.Create(new Note
                 {
-                    AuctionLotId = model.Id,
-                    Text = model.Note
+                    AuctionLotId = model.AuctionLot.Id,
+                    Text = model.RejectNote
                 });
-                return RedirectToAction("Lots", "Moderator");
+                return View("Redirect", new RedirectModel
+                {
+                    InfoMessages = RedirectionMessageProvider.LotRejectedMessages(),
+                    SecondsToRedirect = ApplicationConstantsProvider.GetLongRedirectionTime(),
+                    RedirectUrl = "/Moderator/Lots"
+                });
             }
-            return NotFound();
+            model.Expanded = true;
+            return View("CheckLot", model);
         }
     }
 }
