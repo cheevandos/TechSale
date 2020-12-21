@@ -35,7 +35,10 @@ namespace WebApplicationTechSale.Controllers
                 Status = LotStatusProvider.GetOnModerationStatus()
             });
 
-            int lotsCount = await paginationLotLogic.GetCount();
+            int lotsCount = await paginationLotLogic.GetCount(new AuctionLot
+            {
+                Status = LotStatusProvider.GetOnModerationStatus()
+            });
 
             return View(new AuctionLotsViewModel
             {

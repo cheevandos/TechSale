@@ -4,7 +4,7 @@
 
 <div class="row justify-content-center">
     <div class="col-md-8">
-        <div class="card mt-5">
+        <div class="card mt-lg-3 rounded-0">
             <div class="card-body">
                 <p class="card-title text-center h4 mb-4">Внимательно проверьте все данные!</p>
                 <p class="card-text">Если все поля заполнены корректно и&nbsp;соответствуют правилам размещения лотов, нажмите кнопку &laquo;Опубликовать&raquo;</p>
@@ -29,7 +29,7 @@
                     </div>
                 </li>
             </ul>
-            <img src="@Model.PhotoSrc" class="card-img-bottom" alt="...">
+            <img src="@Model.PhotoSrc" class="card-img-bottom rounded-0" alt="...">
         </div>
     </div>
 </div>
@@ -37,21 +37,21 @@
     <div class="col-md-8 mb-2">
         <form method="post" asp-action="AcceptLot" asp-controller="Moderator" asp-route-id="@Model.Id">
             <div class="d-grid">
-                <button type="submit" class="btn btn-lg btn-success">Опубликовать</button>
+                <button type="submit" class="btn btn-lg btn-secondary rounded-0">Опубликовать</button>
             </div>
         </form>
     </div>
     <div class="col-md-8 mb-2">
-        <a class="btn btn-lg btn-warning d-block" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Отклонить</a>
+        <a class="btn btn-lg btn-dark d-block rounded-0" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Отклонить</a>
         <div class="collapse my-3" id="collapseExample">
             <form method="post" asp-action="RejectLot" asp-controller="Moderator">
                 <div class="mb-3">
                     <input name="model.Id" value="@Model.Id" hidden />
                     <label for="noteTextArea" class="form-label h5">Укажите причину:</label>
-                    <textarea name="model.Note" class="form-control" id="noteTextArea" rows="3"></textarea>
+                    <textarea name="model.Note" class="form-control rounded-0" id="noteTextArea" rows="3"></textarea>
                 </div>
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-lg btn-danger">Подтвердить</button>
+                    <button type="submit" class="btn btn-lg btn-danger rounded-0">Подтвердить</button>
                 </div>
             </form>
         </div>

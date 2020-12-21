@@ -111,9 +111,10 @@ namespace DataAccessLogic.CrudLogic
             .ToListAsync();
         }
 
-        public async Task<int> GetCount()
+        public async Task<int> GetCount(AuctionLot model)
         {
-            return await context.AuctionLots.CountAsync();
+            return await context.AuctionLots.CountAsync(lot => model == null 
+            || !string.IsNullOrWhiteSpace(model.Status) && lot.Status == model.Status);
         }
     }
 }

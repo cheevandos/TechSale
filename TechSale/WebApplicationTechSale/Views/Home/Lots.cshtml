@@ -15,15 +15,15 @@
         if (auctionLot.Status == LotStatusProvider.GetAcceptedStatus())
         {
             <div class="col">
-                <div class="card h-100 ">
-                    <img src="@auctionLot.PhotoSrc" class="card-img-top" alt="...">
+                <div class="card h-100 rounded-0">
+                    <img src="@auctionLot.PhotoSrc" class="card-img-top rounded-0" alt="...">
                     <div class="card-body">
                         <h5 class="card-title"><a>@auctionLot.Name</a></h5>
                         <p class="card-text">@auctionLot.Name</p>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><b>Текущая цена: </b>@auctionLot.PriceInfo.CurrentPrice руб.</li>
-                        <li class="list-group-item"><b>Продавец: @auctionLot.User.UserName</b></li>
+                        <li class="list-group-item">Текущая цена: @auctionLot.PriceInfo.CurrentPrice руб.</li>
+                        <li class="list-group-item">Продавец: @auctionLot.User.UserName</li>
                     </ul>
                 </div>
             </div>

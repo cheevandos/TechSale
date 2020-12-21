@@ -1,11 +1,10 @@
-﻿a {
-    color: #0366d6;
+﻿a.auction-link {
+    text-decoration: none;
+    color: #171717;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+a.auction-link:hover {
+    color: #5a5a5a;
 }
 
 html {
@@ -30,11 +29,6 @@ html {
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
-button.accept-policy {
-    font-size: 1rem;
-    line-height: inherit;
-}
-
 html {
     position: relative;
     min-height: 100%;
@@ -43,6 +37,7 @@ html {
 body {
     margin-top: 73px;
     margin-bottom: 60px;
+    font-family: "Montserrat";
 }
 
 .footer {

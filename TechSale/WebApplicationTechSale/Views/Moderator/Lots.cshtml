@@ -15,15 +15,15 @@
         if (auctionLot.Status == LotStatusProvider.GetOnModerationStatus())
         {
             <div class="col">
-                <div class="card h-100 ">
-                    <a><img src="@auctionLot.PhotoSrc" class="card-img-top" alt="..."></a>
+                <div class="card h-100 rounded-0">
+                    <a><img src="@auctionLot.PhotoSrc" class="card-img-top rounded-0" alt="..."></a>
                     <div class="card-body">
-                        <a asp-action="CheckLot" asp-controller="Moderator" asp-route-id="@auctionLot.Id">
+                        <a class="auction-link" asp-action="CheckLot" asp-controller="Moderator" asp-route-id="@auctionLot.Id">
                             <h5 class="card-title">@auctionLot.Name</h5>
                         </a>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><b>Продавец: @auctionLot.User.UserName</b></li>
+                        <li class="list-group-item">Продавец: @auctionLot.User.UserName</li>
                     </ul>
                 </div>
             </div>

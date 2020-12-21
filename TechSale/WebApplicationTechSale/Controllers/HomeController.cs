@@ -49,7 +49,10 @@ namespace WebApplicationTechSale.Controllers
                 Status = LotStatusProvider.GetAcceptedStatus()
             });
 
-            int lotsCount = await lotLogic.GetCount();
+            int lotsCount = await lotLogic.GetCount(new AuctionLot
+            {
+                Status = LotStatusProvider.GetAcceptedStatus()
+            });
 
             return View(new AuctionLotsViewModel()
             {

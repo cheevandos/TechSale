@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/fonts.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -14,7 +15,7 @@
                 <div>
                     <a class="navbar-brand" asp-action="Lots" asp-controller="Home"><img src="~/images/logo.svg" width="130"></a>
                 </div>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler rounded-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -22,44 +23,44 @@
                         @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
                         {
                             <li class="nav-item mx-1 my-1">
-                                <a class="btn btn-lg btn-outline-light" asp-action="UsersList" asp-controller="Admin"><div class="text-dark">Список модераторов</div></a>
+                                <a class="btn btn-lg btn-outline-light rounded-0" asp-action="UsersList" asp-controller="Admin"><div class="text-dark">Список модераторов</div></a>
                             </li>
                         }
                         else if (User.Identity.IsAuthenticated && User.IsInRole("moderator"))
                         {
                             <li class="nav-item mx-1 my-1">
-                                <a class="btn btn-lg btn-outline-light" asp-action="Lots" asp-controller="Moderator"><div class="text-dark">Список лотов</div></a>
+                                <a class="btn btn-lg btn-outline-light rounded-0" asp-action="Lots" asp-controller="Moderator"><div class="text-dark">Список лотов</div></a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item mx-1 my-1">
-                                <a class="btn btn-lg btn-outline-light" asp-action="Lots" asp-controller="Home"><div class="text-dark">Главная</div></a>
+                                <a class="btn btn-lg btn-outline-light rounded-0" asp-action="Lots" asp-controller="Home"><div class="text-dark">Главная</div></a>
                             </li>
                         }
                         <li class="nav-item mx-1 my-1">
-                            <a class="btn btn-lg btn-outline-light" asp-action="Rules" asp-controller="Home"><div class="text-dark">Правила аукциона</div></a>
+                            <a class="btn btn-lg btn-outline-light rounded-0" asp-action="Rules" asp-controller="Home"><div class="text-dark">Правила аукциона</div></a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item ms-1 my-1">
-                                <a class="btn btn-lg btn-outline-light" asp-action="Personal" asp-controller="Account"><div class="text-dark">Личный кабинет</div></a>
+                                <a class="btn btn-lg btn-outline-light rounded-0" asp-action="Personal" asp-controller="Account"><div class="text-dark">Личный кабинет</div></a>
                             </li>
                             <li class="nav-item ms-1 my-1">
                                 <form method="post" asp-controller="Account" asp-action="Logout">
-                                    <button type="submit" class="btn btn-lg btn-outline-secondary">Выход</button>
+                                    <button type="submit" class="btn btn-lg btn-outline-secondary rounded-0">Выход</button>
                                 </form>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item ms-1 my-1">
-                                <a class="btn btn-lg btn-outline-light" asp-action="Login" asp-controller="Account"><div class="text-dark">Вход</div></a>
+                                <a class="btn btn-lg btn-outline-light rounded-0" asp-action="Login" asp-controller="Account"><div class="text-dark">Вход</div></a>
                             </li>
                             <li class="nav-item ms-1 my-1">
-                                <a class="btn btn-lg btn-outline-light" asp-action="Register" asp-controller="Account"><div class="text-dark">Регистрация</div></a>
+                                <a class="btn btn-lg btn-outline-light rounded-0" asp-action="Register" asp-controller="Account"><div class="text-dark">Регистрация</div></a>
                             </li>
                         }
                     </ul>

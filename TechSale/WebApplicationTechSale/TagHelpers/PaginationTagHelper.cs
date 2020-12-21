@@ -66,8 +66,8 @@ namespace WebApplicationTechSale.TagHelpers
             {
                 link.Attributes["href"] = urlHelper.Action(PageAction, new { page = pageNumber });
             }
-            item.AddCssClass("page-item");
-            link.AddCssClass("page-link");
+            item.AddCssClass("page-item rounded-0");
+            link.AddCssClass("page-link rounded-0");
             link.InnerHtml.Append(pageNumber.ToString());
             item.InnerHtml.AppendHtml(link);
             return item;

@@ -1,24 +1,21 @@
-<svg width="630" height="210" xmlns="http://www.w3.org/2000/svg">
+<svg width="572" height="172" xmlns="http://www.w3.org/2000/svg">
  <!-- Created with SVG Editor - http://github.com/mzalive/SVG Editor/ -->
 
  <g>
   <title>background</title>
-  <rect x="-1" y="-1" width="632" height="212" id="canvas_background" fill="#fff"/>
+  <rect x="-1" y="-1" width="574" height="174" id="canvas_background" fill="#fff"/>
   <g id="canvasGrid" display="none">
-   <rect id="svg_1" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
+   <rect id="svg_5" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
   </g>
  </g>
  <g>
   <title>Layer 1</title>
-  <text opacity="0.85" fill="#000000" stroke-width="0" x="98.934645" y="131.067256" id="svg_3" font-size="24" font-family="'Trebuchet MS', Gadget, sans-serif" text-anchor="start" xml:space="preserve" stroke="#000" font-weight="normal" transform="matrix(7.590644322165133,0,0,7.590644322165133,-743.604532904441,-824.4968889649712) " font-style="normal">Tech</text>
-  <g opacity="0.85" id="svg_9" stroke="null">
-   <rect fill="#fff" stroke-width="10" x="391.037624" y="15.670798" width="231.690505" height="143.250074" id="svg_4" rx="10" stroke="#000"/>
-   <line fill="none" stroke-width="10" stroke-opacity="null" fill-opacity="null" x1="393.533981" y1="127.319296" x2="619.797958" y2="127.319296" id="svg_5" stroke-linejoin="null" stroke-linecap="null" stroke="#000"/>
-   <g id="svg_8" stroke="null">
-    <rect fill="#fff" stroke-width="10" stroke-opacity="null" fill-opacity="null" x="468.599547" y="160.791982" width="75.700858" height="33.190906" id="svg_6" stroke="#000"/>
-    <line fill="none" stroke-width="10" stroke-opacity="null" fill-opacity="null" x1="452.151369" y1="194.329196" x2="560.748551" y2="194.329196" id="svg_7" stroke-linejoin="null" stroke-linecap="null" stroke="#000"/>
-   </g>
+  <g id="svg_7" opacity="0.7">
+   <text fill="#000000" stroke="#000" stroke-width="0" x="3.489323" y="138.860529" id="svg_1" font-size="140" font-family="Oswald, sans-serif" text-anchor="start" xml:space="preserve" font-weight="normal" font-style="normal">Tech</text>
+   <rect fill="#fff" stroke="#000" stroke-width="10" x="309.362541" y="8.373349" width="250" height="125" id="svg_2"/>
+   <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="324.294005" y="110.77368" id="svg_3" font-size="120" font-family="Oswald, sans-serif" text-anchor="start" xml:space="preserve" font-weight="normal">sale</text>
+   <rect fill="#fff" stroke-width="10" stroke-opacity="null" fill-opacity="null" x="405.901024" y="134.306449" width="56.923077" height="26.666661" id="svg_4" stroke="#000"/>
+   <rect fill="#fff" stroke-width="10" stroke-opacity="null" fill-opacity="null" x="377.439462" y="160.973113" width="113.846154" height="0.512821" id="svg_6" stroke="#000"/>
   </g>
-  <text opacity="0.85" fill="#000000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="292.945731" y="150.331063" id="svg_10" font-size="24" font-family="'Trebuchet MS', Gadget, sans-serif" text-anchor="start" xml:space="preserve" stroke="#000" font-weight="bold" transform="matrix(4.475734368916291,0,0,4.414744471508139,-905.3251600558511,-552.7768698360373) ">Sale</text>
  </g>
 </svg>
