@@ -4,11 +4,10 @@ using DataAccessLogic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WebApplicationTechSale.Models;
+using WebApplicationTechSale.HelperServices;
 
 namespace WebApplicationTechSale.Controllers
 {
@@ -199,7 +198,12 @@ namespace WebApplicationTechSale.Controllers
                 {
                     await userManager.AddToRoleAsync(user, "regular user");
                     await signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Lots", "Home");
+                    return View("Redirect", new RedirectModel
+                    {
+                        InfoMessages = RedirectionMessageProvider.AccountCreatedMessages(),
+                        RedirectUrl = "Home/Lots",
+                        SecondsToRedirect = ApplicationConstantsProvider.GetShortRedirectionTime()
+                    });
                 }
                 else
                 {

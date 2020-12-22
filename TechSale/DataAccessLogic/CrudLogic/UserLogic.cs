@@ -1,11 +1,10 @@
 ﻿using DataAccessLogic.DatabaseModels;
 using DataAccessLogic.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace DataAccessLogic.CrudLogic
 {
@@ -28,11 +27,11 @@ namespace DataAccessLogic.CrudLogic
             throw new NotImplementedException();
         }
 
-        public List<User> Read(User model)
+        public async Task<List<User>> Read(User model)
         {
-            return context.Users.Where(user => (model == null)
+            return await context.Users.Where(user => (model == null)
             || (!string.IsNullOrWhiteSpace(model.UserName) && user.UserName == model.UserName))
-            .ToList();
+            .ToListAsync();
         }
 
         public async Task Update(User model)

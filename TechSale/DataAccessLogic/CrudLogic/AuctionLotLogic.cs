@@ -92,21 +92,22 @@ namespace DataAccessLogic.CrudLogic
             await context.SaveChangesAsync();
         }
 
-        public List<AuctionLot> Read(AuctionLot model)
+        public async Task<List<AuctionLot>> Read(AuctionLot model)
         {
-            return context.AuctionLots.Where(lot => model == null
+            return await context.AuctionLots.Include(lot => lot.User).Include(lot => lot.Bids).Where(lot => model == null
             || model.User != null && !string.IsNullOrWhiteSpace(model.User.UserName) && lot.User.UserName == model.User.UserName
             || !string.IsNullOrWhiteSpace(model.Id) && lot.Id == model.Id
             || !string.IsNullOrWhiteSpace(model.Status) && lot.Status == model.Status)
-                .ToList();
+            .ToListAsync();
         }
 
         public async Task<List<AuctionLot>> GetPage(int pageNumber, AuctionLot model)
         {
             return await context.AuctionLots.Include(lot => lot.User).Include(lot =>
-            lot.PriceInfo).Where(lot => model == null 
+            lot.PriceInfo).Where(lot => model == null
             || !string.IsNullOrWhiteSpace(model.Status) && lot.Status == model.Status
             || model.User != null && lot.User == model.User)
+            .OrderByDescending(lot => lot.StartDate)
             .Skip((pageNumber <= 0 ? 0 : pageNumber - 1) *
             ApplicationConstantsProvider.GetPageSize())
             .Take(ApplicationConstantsProvider.GetPageSize())

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.ComponentModel.DataAnnotations;
+using WebApplicationTechSale.HelperServices;
 
 namespace WebApplicationTechSale.Models
 {
@@ -14,7 +15,8 @@ namespace WebApplicationTechSale.Models
         [Display(Name = "Фотография")]
         [Required(ErrorMessage = "Загрузите фотографию товара")]
         [DataType(DataType.Upload)]
-        [FileExtensions(Extensions = "jpg,jpeg,png,pjpg,pjpeg", ErrorMessage = "Неверный формат файла")]
+        [ExtensionValidation(new string[] 
+        { ".jpg", ".jpeg", ".pjpg", ".pjpeg", ".png" }, ErrorMessage = "Неверный формат файла")]
         public IFormFile Photo { get; set; }
 
         [Display(Name = "Описание лота")]

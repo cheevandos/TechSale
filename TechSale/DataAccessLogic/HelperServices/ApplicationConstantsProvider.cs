@@ -16,5 +16,10 @@
         {
             return 10;
         }
+
+        public static int GetMaxRedirectionTime()
+        {
+            return 15;
+        }
     }
 }

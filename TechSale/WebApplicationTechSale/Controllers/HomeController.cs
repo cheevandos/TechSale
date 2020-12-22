@@ -26,16 +26,16 @@ namespace WebApplicationTechSale.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult SendMessageToBot(string msg)
+        public async Task<IActionResult> SendMessageToBot(string msg)
         {
-            User user = userLogic.Read(new User
+            User user = (await userLogic.Read(new User
             {
                 UserName = User.Identity.Name
-            })?.First();
+            }))?.First();
 
             if (user != null && !string.IsNullOrWhiteSpace(user.TelegramChatId))
             {
-                bot.SendMessage(msg, user.TelegramChatId);
+                await bot.SendMessage(msg, user.TelegramChatId);
             }
 
             return RedirectToAction("Index", "Home");

@@ -9,7 +9,7 @@
             <div class="card my-3 rounded-0">
                 <div class="card-body">
                     <h5 class="card-title text-center my-3">Создайте новый лот</h5>
-                    <form method="post" asp-action="CreateLot" asp-controller="Seller" enctype="multipart/form-data">
+                    <form method="post" asp-action="CreateLot" asp-controller="User" enctype="multipart/form-data">
                         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                         <div class="mb-3">
                             <label asp-for="Name" class="form-label"></label>
@@ -40,7 +40,7 @@
                         </div>
                         <div class="mb-3">
                             <label asp-for="EndDate" class="form-label"></label>
-                            <input asp-for="EndDate" class="form-control rounded-0" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")">
+                            <input asp-for="EndDate" class="form-control rounded-0" type="date" min="@DateTime.Now.AddDays(3).ToString("yyyy-MM-dd")">
                             <span class="text-danger" asp-validation-for="EndDate"></span>
                         </div>
                         <div class="mb-3">

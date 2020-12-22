@@ -8,6 +8,6 @@ namespace DataAccessLogic.Interfaces
         Task Create(T model);
         Task Update(T model);
         Task Delete(T model);
-        List<T> Read(T model);
+        Task<List<T>> Read(T model);
     }
 }

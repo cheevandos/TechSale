@@ -49,14 +49,14 @@ namespace WebApplicationTechSale.Controllers
         }
 
         [HttpGet]
-        public IActionResult CheckLot(string id)
+        public async Task<IActionResult> CheckLot(string id)
         {
             if (!string.IsNullOrWhiteSpace(id))
             {
-                AuctionLot lotToCheck = crudLotLogic.Read(new AuctionLot
+                AuctionLot lotToCheck = (await crudLotLogic.Read(new AuctionLot
                 {
                     Id = id
-                })?.First();
+                }))?.First();
                 return View(new LotModerationModel
                 { 
                     AuctionLot = lotToCheck

@@ -15,11 +15,27 @@
             <div class="card h-100 rounded-0">
                 <img src="@auctionLot.PhotoSrc" class="card-img-top rounded-0" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title"><a>@auctionLot.Name</a></h5>
-                    <p class="card-text">@auctionLot.Name</p>
+                    <a class="auction-link" asp-action="OpenLot" asp-controller="User" asp-route-id="@auctionLot.Id">
+                        <h5 class="card-title">@auctionLot.Name</h5>
+                    </a>
+                    <p class="card-text text-wrap">@auctionLot.Description</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Текущая цена: @auctionLot.PriceInfo.CurrentPrice руб.</li>
+                    @if (DateTime.Now > auctionLot.StartDate && DateTime.Now < auctionLot.EndDate)
+                    {
+                        <li class="list-group-item">До конца: <span class="active-lot">@Math.Round((auctionLot.EndDate - DateTime.Now).TotalSeconds)</span></li>
+                        <li class="list-group-item">Текущая цена: @auctionLot.PriceInfo.CurrentPrice руб.</li>
+                    }
+                    else if (DateTime.Now < auctionLot.StartDate)
+                    {
+                        <li class="list-group-item">Начало: <span class="time-left">@auctionLot.StartDate.ToShortDateString()</span></li>
+                        <li class="list-group-item">Текущая цена: @auctionLot.PriceInfo.StartPrice руб.</li>
+                    }
+                    else
+                    {
+                        <li class="list-group-item">Торги окончены @auctionLot.EndDate.ToShortDateString()</li>
+                        <li class="list-group-item">Цена закрытия: @auctionLot.PriceInfo.CurrentPrice руб.</li>
+                    }
                     <li class="list-group-item">Продавец: @auctionLot.User.UserName</li>
                 </ul>
             </div>
@@ -30,4 +46,31 @@
 @if (Model.AuctionLots.Count() > 0)
 {
     <pagination page-model="@Model.PageViewModel" page-action="Lots" page-controller="Home"></pagination>
+}
+
+@section Scripts {
+    <script>
+        let lotTimeIntervals = new Array();
+
+        let activeLots = document.querySelectorAll(".active-lot");
+
+        for (let i = 0; i < activeLots.length; i++) {
+            lotTimeIntervals[i] = (Number)(activeLots[i].innerHTML);
+        }
+
+        function Timer() {
+            for (let i = 0; i < activeLots.length; i++) {
+                console.log(activeLots[i].innerHTML);
+                let hoursLeft = Math.round(lotTimeIntervals[i] / 3600); 
+                let minutesLeft = Math.round((lotTimeIntervals[i] / 60) % 60);
+                activeLots[i].innerHTML = hoursLeft + " ч. " + minutesLeft + " мин.";
+                lotTimeIntervals[i]--;
+                if (lotTimeIntervals[i] == 0) {
+                    window.location.reload();
+                }
+            }
+        }
+        Timer();
+        setInterval(Timer, 1000);
+    </script>
 }
