@@ -6,50 +6,51 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <div class="card my-3">
+            <div class="card my-3 rounded-0">
                 <div class="card-body">
                     <h5 class="card-title text-center my-3">Создайте новый лот</h5>
                     <form method="post" asp-action="CreateLot" asp-controller="Seller" enctype="multipart/form-data">
                         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                         <div class="mb-3">
-                            <label asp-for="Name" class="form-label">Введите название лота</label>
-                            <input asp-for="Name" class="form-control">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control rounded-0">
                             <div class="form-text">Не более 150 символов</div>
                             <span class="text-danger" asp-validation-for="Name"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="Description" class="form-label">Добавьте описание товара</label>
-                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <label asp-for="Description" class="form-label"></label>
+                            <textarea asp-for="Description" class="form-control rounded-0" rows="3"></textarea>
                             <div class="form-text">Не более 500 символов</div>
                             <span class="text-danger" asp-validation-for="Description"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="StartPrice" class="form-label">Введите начальную цену</label>
-                            <input asp-for="StartPrice" class="form-control" type="number" min="0">
+                            <label asp-for="StartPrice" class="form-label"></label>
+                            <input asp-for="StartPrice" class="form-control rounded-0" type="number" min="0">
                             <span class="text-danger" asp-validation-for="StartPrice"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="BidStep" class="form-label">Введите шаг ставки</label>
-                            <input asp-for="BidStep" class="form-control" type="number" min="0">
+                            <label asp-for="BidStep" class="form-label"></label>
+                            <input asp-for="BidStep" class="form-control rounded-0" type="number" min="0">
                             <span class="text-danger" asp-validation-for="BidStep"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="StartDate" class="form-label">Укажите дату начала торгов</label>
-                            <input asp-for="StartDate" class="form-control" type="date" min="@DateTime.Now.ToShortDateString()">
+                            <label asp-for="StartDate" class="form-label"></label>
+                            <input asp-for="StartDate" class="form-control rounded-0" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")">
                             <span class="text-danger" asp-validation-for="StartDate"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="EndDate" class="form-label">Укажите дату окончания торгов</label>
-                            <input asp-for="EndDate" class="form-control" type="date" min="@DateTime.Now.AddDays(1).ToShortDateString()">
+                            <label asp-for="EndDate" class="form-label"></label>
+                            <input asp-for="EndDate" class="form-control rounded-0" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")">
                             <span class="text-danger" asp-validation-for="EndDate"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="Photo" class="form-label">Загрузите фотографию товара</label>
-                            <input asp-for="Photo" class="form-control" type="file">
+                            <label asp-for="Photo" class="form-label"></label>
+                            <input asp-for="Photo" class="form-control rounded-0" type="file" accept=".png, .jpeg, image/jpeg, image/pjpeg, image/png">
+                            <div class="form-text">Файл размером до 5 Мегабайт в одном из форматов: .jpeg .jpg .png</div>
                             <span class="text-danger" asp-validation-for="Photo"></span>
                         </div>
-                        <div class="my-3">
-                            <button type="submit" class="btn btn-primary">Подтвердить и отправить на проверку</button>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-lg btn-dark rounded-0">Подтвердить и отправить на проверку</button>
                         </div>
                     </form>
                 </div>

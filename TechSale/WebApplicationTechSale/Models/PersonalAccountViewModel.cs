@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace WebApplicationTechSale.Models
 {
@@ -14,7 +10,6 @@ namespace WebApplicationTechSale.Models
         [Display(Name = "Имя пользователя в Telegram")]
         public string TelegramId { get; set; }
 
-        [Display(Name = "Пароль")]
-        public string Password { get; set; }
+        public AuctionLotsViewModel PersonalLotsList { get; set; }
     }
 }

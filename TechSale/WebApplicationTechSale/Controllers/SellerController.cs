@@ -56,13 +56,13 @@ namespace WebApplicationTechSale.Controllers
                         UserName = User.Identity.Name
                     },
                     Description = model.Description,
-                    StartDate = model.StartDate,
-                    EndDate = model.EndDate,
+                    StartDate = model.StartDate.Value,
+                    EndDate = model.EndDate.Value,
                     PriceInfo = new PriceInfo
                     {
-                        StartPrice = model.StartPrice,
-                        CurrentPrice = model.StartPrice,
-                        BidStep = model.BidStep
+                        StartPrice = model.StartPrice.Value,
+                        CurrentPrice = model.StartPrice.Value,
+                        BidStep = model.BidStep.Value
                     }
                 };
 

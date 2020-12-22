@@ -1,4 +1,6 @@
 ﻿using DataAccessLogic.DatabaseModels;
+using DataAccessLogic.HelperServices;
+using DataAccessLogic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +16,12 @@ namespace WebApplicationTechSale.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly IPagination<AuctionLot> lotLogic;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(IPagination<AuctionLot> lotLogic,
+            UserManager<User> userManager, SignInManager<User> signInManager)
         {
+            this.lotLogic = lotLogic;
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
@@ -78,13 +83,34 @@ namespace WebApplicationTechSale.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult Personal()
+        public async Task<IActionResult> Personal(int page = 1)
         {
-            var user = userManager.FindByNameAsync(User.Identity.Name);
+            User user = await userManager.FindByNameAsync(User.Identity.Name);
+
+            List<AuctionLot> userLots = new List<AuctionLot>();
+            int count = 0;
+
+            if (await userManager.IsInRoleAsync(user, "regular user"))
+            {
+                userLots = await lotLogic.GetPage(page, new AuctionLot
+                {
+                    User = user
+                });
+                count = await lotLogic.GetCount(new AuctionLot
+                {
+                    User = user
+                });
+            }
+
             PersonalAccountViewModel model = new PersonalAccountViewModel
             {
-                Email = user.Result.Email,
-                TelegramId = user.Result.TelegramUsername
+                Email = user.Email,
+                TelegramId = user.TelegramUsername,
+                PersonalLotsList = new AuctionLotsViewModel
+                {
+                    AuctionLots = userLots,
+                    PageViewModel = new PageViewModel(count, page, ApplicationConstantsProvider.GetPageSize())
+                }
             };
             return View(model);
         }

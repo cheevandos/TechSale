@@ -1,15 +1,86 @@
-﻿@model WebApplicationTechSale.Models.PersonalAccountViewModel
+﻿@using DataAccessLogic.DatabaseModels;
 
-<form method="get" asp-action="Personal" asp-controller="Account">
-    <div>
-        <label asp-for="TelegramId" class="form-label"></label>
-        : @Model.TelegramId
+@model WebApplicationTechSale.Models.PersonalAccountViewModel
+
+@{
+    ViewData["Title"] = "Список лотов";
+}
+
+@addTagHelper *, WebApplicationTechSale
+
+<div class="row justify-content-center my-lg-2 pt-lg-3">
+    <div class="col-lg-5 col-xl-4 mb-2">
+        <h5 class="mb-4">Управление учетной записью:</h5>
+        <p>
+            <a class="btn btn-dark d-block rounded-0">Изменить учетные данные</a>
+        </p>
+        <p>
+            <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-dark d-block rounded-0">Изменить пароль</a>
+        </p>
+        <form method="post" asp-action="Logout" asp-controller="Account">
+            <div class="d-grid">
+                <button type="submit" class="btn btn-danger rounded-0">Выйти из учетной записи</button>
+            </div>
+        </form>
     </div>
-    <div>
-        <label asp-for="Email" class="form-label"></label>
-        : @Model.Email
+    <div class="col-lg-7 col-xl-8 mb-2">
+        <h5 class="mb-4 mt-4 mt-lg-0">Данные учетной записи:</h5>
+        <div class="row mt-2">
+            <div class="col-md-4 col-lg-5 d-flex align-items-center">
+                <h6>Имя пользователя</h6>
+            </div>
+            <div class="col-md-8 col-lg-7">
+                <input class="form-control rounded-0" type="text" placeholder="@Model.Email" disabled>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-5 col-lg-6 col-xl-5 d-flex align-items-center">
+                <h6>Адрес электронной почты</h6>
+            </div>
+            <div class="col-md-7 col-lg-6 col-xl-7">
+                <input class="form-control rounded-0" type="text" placeholder="@Model.Email" disabled>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-5 col-lg-6 col-xl-5 d-flex align-items-center">
+                <h6>Идентификатор в Telegram</h6>
+            </div>
+            <div class="col-md-7 col-lg-6 col-xl-7">
+                <input class="form-control rounded-0" type="text" placeholder="@Model.TelegramId" disabled>
+            </div>
+        </div>
     </div>
-</form>
-<p>
-    <a class="btn btn-primary" asp-action="ChangePassword" asp-route-id="@User.Identity">Изменить пароль</a>
-</p>
+</div>
+@if (Model.PersonalLotsList.AuctionLots.Count() > 0)
+{
+    <div class="row justify-content-center my-2">
+        <div class="col">
+            <h5>Список лотов:</h5>
+        </div>
+    </div>
+    <div class="row justify-content-center my-2">
+        <div class="col-md-6 col-lg-4">
+            <p>
+                <a asp-action="CreateLot" asp-controller="Seller" class="btn btn-dark d-block rounded-0">+ Новый лот</a>
+            </p>
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (AuctionLot auctionLot in Model.PersonalLotsList.AuctionLots)
+        {
+            <div class="col">
+                <div class="card h-100 rounded-0">
+                    <img src="@auctionLot.PhotoSrc" class="card-img-top rounded-0" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><a>@auctionLot.Name</a></h5>
+                        <p class="card-text">@auctionLot.Name</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Текущая цена: @auctionLot.PriceInfo.CurrentPrice руб.</li>
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+    <pagination page-model="@Model.PersonalLotsList.PageViewModel" page-action="Personal" page-controller="Account"></pagination>
+}

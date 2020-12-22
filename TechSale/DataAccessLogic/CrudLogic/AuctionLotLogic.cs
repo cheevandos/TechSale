@@ -104,7 +104,9 @@ namespace DataAccessLogic.CrudLogic
         public async Task<List<AuctionLot>> GetPage(int pageNumber, AuctionLot model)
         {
             return await context.AuctionLots.Include(lot => lot.User).Include(lot =>
-            lot.PriceInfo).Where(lot => model == null || lot.Status == model.Status)
+            lot.PriceInfo).Where(lot => model == null 
+            || !string.IsNullOrWhiteSpace(model.Status) && lot.Status == model.Status
+            || model.User != null && lot.User == model.User)
             .Skip((pageNumber <= 0 ? 0 : pageNumber - 1) *
             ApplicationConstantsProvider.GetPageSize())
             .Take(ApplicationConstantsProvider.GetPageSize())
@@ -114,7 +116,8 @@ namespace DataAccessLogic.CrudLogic
         public async Task<int> GetCount(AuctionLot model)
         {
             return await context.AuctionLots.CountAsync(lot => model == null 
-            || !string.IsNullOrWhiteSpace(model.Status) && lot.Status == model.Status);
+            || !string.IsNullOrWhiteSpace(model.Status) && lot.Status == model.Status
+            || model.User != null && lot.User == model.User);
         }
     }
 }

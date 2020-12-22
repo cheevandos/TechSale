@@ -1,5 +1,4 @@
 ﻿@using DataAccessLogic.DatabaseModels;
-@using DataAccessLogic.HelperServices;
 
 @model AuctionLotsViewModel
 
@@ -12,26 +11,23 @@
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 my-lg-2">
     @foreach (AuctionLot auctionLot in Model.AuctionLots)
     {
-        if (auctionLot.Status == LotStatusProvider.GetAcceptedStatus())
-        {
-            <div class="col">
-                <div class="card h-100 rounded-0">
-                    <img src="@auctionLot.PhotoSrc" class="card-img-top rounded-0" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title"><a>@auctionLot.Name</a></h5>
-                        <p class="card-text">@auctionLot.Name</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Текущая цена: @auctionLot.PriceInfo.CurrentPrice руб.</li>
-                        <li class="list-group-item">Продавец: @auctionLot.User.UserName</li>
-                    </ul>
+        <div class="col">
+            <div class="card h-100 rounded-0">
+                <img src="@auctionLot.PhotoSrc" class="card-img-top rounded-0" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><a>@auctionLot.Name</a></h5>
+                    <p class="card-text">@auctionLot.Name</p>
                 </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Текущая цена: @auctionLot.PriceInfo.CurrentPrice руб.</li>
+                    <li class="list-group-item">Продавец: @auctionLot.User.UserName</li>
+                </ul>
             </div>
-        }
+        </div>
     }
 </div>
 
 @if (Model.AuctionLots.Count() > 0)
 {
-    <pagination page-model="@Model.PageViewModel" page-action="Lots"></pagination>
+    <pagination page-model="@Model.PageViewModel" page-action="Lots" page-controller="Home"></pagination>
 }

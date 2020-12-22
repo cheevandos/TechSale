@@ -3,10 +3,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WebApplicationTechSale.Models;
 
 namespace WebApplicationTechSale.TagHelpers
@@ -25,6 +21,7 @@ namespace WebApplicationTechSale.TagHelpers
         public ViewContext ViewContext { get; set; }
         public PageViewModel PageModel { get; set; }
         public string PageAction { get; set; }
+        public string PageController { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -64,7 +61,7 @@ namespace WebApplicationTechSale.TagHelpers
             }
             else
             {
-                link.Attributes["href"] = urlHelper.Action(PageAction, new { page = pageNumber });
+                link.Attributes["href"] = urlHelper.Action(PageAction, PageController, new { page = pageNumber });
             }
             item.AddCssClass("page-item rounded-0");
             link.AddCssClass("page-link rounded-0");

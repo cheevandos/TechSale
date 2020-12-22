@@ -33,5 +33,5 @@
 
 @if (Model.AuctionLots.Count() > 0)
 {
-    <pagination page-model="@Model.PageViewModel" page-action="Lots"></pagination>
+    <pagination page-model="@Model.PageViewModel" page-action="Lots" page-controller="Moderator"></pagination>
 }
