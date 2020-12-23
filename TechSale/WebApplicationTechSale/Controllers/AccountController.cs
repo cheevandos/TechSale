@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApplicationTechSale.Models;
 using WebApplicationTechSale.HelperServices;
+using WebApplicationTechSale.Models;
 
 namespace WebApplicationTechSale.Controllers
 {
@@ -16,13 +16,15 @@ namespace WebApplicationTechSale.Controllers
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IPagination<AuctionLot> lotLogic;
+        private readonly ISavedLogic savedListLogic;
 
-        public AccountController(IPagination<AuctionLot> lotLogic,
+        public AccountController(IPagination<AuctionLot> lotLogic, ISavedLogic savedListLogic,
             UserManager<User> userManager, SignInManager<User> signInManager)
         {
             this.lotLogic = lotLogic;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.savedListLogic = savedListLogic;
         }
 
         [Authorize]
@@ -44,6 +46,7 @@ namespace WebApplicationTechSale.Controllers
 
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (ModelState.IsValid)
@@ -182,6 +185,7 @@ namespace WebApplicationTechSale.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -197,11 +201,12 @@ namespace WebApplicationTechSale.Controllers
                 if (registerResult.Succeeded)
                 {
                     await userManager.AddToRoleAsync(user, "regular user");
+                    await savedListLogic.Create(user);
                     await signInManager.SignInAsync(user, false);
                     return View("Redirect", new RedirectModel
                     {
                         InfoMessages = RedirectionMessageProvider.AccountCreatedMessages(),
-                        RedirectUrl = "Home/Lots",
+                        RedirectUrl = "/Home/Lots",
                         SecondsToRedirect = ApplicationConstantsProvider.GetShortRedirectionTime()
                     });
                 }

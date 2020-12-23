@@ -27,13 +27,15 @@ namespace WebApplicationTechSale
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(Configuration["LocalDBConnectionString"]));
 
             services.AddTransient<ICrudLogic<AuctionLot>, AuctionLotLogic>();
             services.AddTransient<ICrudLogic<User>, UserLogic>();
             services.AddTransient<ICrudLogic<Note>, NoteLogic>();
+            services.AddTransient<ICrudLogic<Bid>, BidLogic>();
+            services.AddTransient<ISavedLogic, SavedListLogic>();
             services.AddTransient<IPagination<AuctionLot>, AuctionLotLogic>();
-            services.AddSingleton<IBot, TechSaleBot>();
+            services.AddSingleton<IBot, TechSaleBot>(bot => new TechSaleBot(Configuration["BotToken"]));
             //services.AddHostedService<BotHostService>();
 
             services.AddIdentity<User, IdentityRole>(options => 

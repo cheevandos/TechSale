@@ -43,5 +43,14 @@ namespace WebApplicationTechSale.HelperServices
                 "Сейчас вы будете перенаправлены на главную страницу нашего сайта"
             };
         }
+
+        public static List<string> BidPlacedMessages()
+        {
+            return new List<string>()
+            {
+                "Ставка принята",
+                "Сейчас вы будете перенаправлены на страницу лота, где сможете увидеть вашу ставку"
+            };
+        }
     }
 }

@@ -25,19 +25,11 @@ namespace WebApplicationTechSale
                 {
                     var userManager = provider.GetRequiredService<UserManager<User>>();
                     var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
+                    var configuration = provider.GetRequiredService<IConfiguration>();
 
-                    IConfigurationBuilder configBuilder = new ConfigurationBuilder().AddJsonFile("basedata.json");
-                    IConfigurationRoot configuration = configBuilder.Build();
 
-                    IConfigurationSection section = configuration.GetSection("BaseRoles");
-
-                    List<string> baseRoles = section.Get<List<string>>();
-
-                    string adminEmail = configuration["AdminData:Email"];
-                    string adminPassword = configuration["AdminData:Password"];
-
-                    await RoleInitializer.InitializeRolesAsync(roleManager, baseRoles);
-                    await AdminInitializer.InitializeAdmin(userManager, adminEmail, adminPassword);
+                    await RoleInitializer.InitializeRolesAsync(roleManager, configuration);
+                    await AdminInitializer.InitializeAdmin(userManager, configuration);
                 } 
                 catch (Exception ex)
                 {

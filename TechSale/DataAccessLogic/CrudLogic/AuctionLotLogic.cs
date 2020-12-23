@@ -94,7 +94,7 @@ namespace DataAccessLogic.CrudLogic
 
         public async Task<List<AuctionLot>> Read(AuctionLot model)
         {
-            return await context.AuctionLots.Include(lot => lot.User).Include(lot => lot.Bids).Where(lot => model == null
+            return await context.AuctionLots.Include(lot => lot.User).Where(lot => model == null
             || model.User != null && !string.IsNullOrWhiteSpace(model.User.UserName) && lot.User.UserName == model.User.UserName
             || !string.IsNullOrWhiteSpace(model.Id) && lot.Id == model.Id
             || !string.IsNullOrWhiteSpace(model.Status) && lot.Status == model.Status)

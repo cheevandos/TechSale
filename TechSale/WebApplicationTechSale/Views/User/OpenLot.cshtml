@@ -2,22 +2,43 @@
 
 @model AuctionLot
 
-<div class="row justify-content-center">
-    <div class="col-lg-10 col-xl-8">
-        <p>
-            <h4>@Model.Name</h4>
-        </p>
+<div class="row justify-content-center pt-3">
+    <div class="col-lg-6 col-xl-5 d-flex align-items-center">
+        <div class="h4 my-0 py-3">@Model.Name</div>
     </div>
+    @if (User.Identity.Name != Model.User.UserName)
+    {
+        if (ViewBag.IsSaved)
+        {
+            <div class="col-lg-4 col-xl-4">
+                <form method="post" asp-action="RemoveLot" asp-controller="User" asp-route-lotId="@Model.Id">
+                    <div class="d-grid my-3">
+                        <button type="submit" class="btn btn-lg btn-dark rounded-0">Удалить из избранного</button>
+                    </div>
+                </form>
+            </div>
+        }
+        else
+        {
+            <div class="col-lg-4 col-xl-4">
+                <form method="post" asp-action="SaveLot" asp-controller="User" asp-route-lotId="@Model.Id">
+                    <div class="d-grid my-3">
+                        <button type="submit" class="btn btn-lg btn-dark rounded-0">Добавить в избранное</button>
+                    </div>
+                </form>
+            </div>
+        }
+    }
 </div>
 <div class="row justify-content-center">
-    <div class="col-lg-10 col-xl-8">
+    <div class="col-lg-10 col-xl-9">
         <div class="card rounded-0">
             <img src="@Model.PhotoSrc" class="card-img-top rounded-0" alt="...">
         </div>
     </div>
 </div>
 <div class="row justify-content-center mt-4">
-    <div class="col-md-8 col-lg-6 col-xl-5">
+    <div class="col-lg-7 col-xl-6">
         <div class="row mb-4 mb-xl-0 h-100">
             @if (DateTime.Now < Model.StartDate)
             {
@@ -50,20 +71,19 @@
             <a class="btn btn-lg btn-dark rounded-0 d-block">Редактировать</a>
         </div>
     }
-    else if (DateTime.Now > Model.StartDate && User.Identity.Name != Model.User.UserName)
+    else if (DateTime.Now > Model.StartDate && DateTime.Now < Model.EndDate && User.Identity.Name != Model.User.UserName)
     {
-        <div class="col-md-4 col-lg-4 col-xl-3">
-            <form method="post" asp-action="Bid" asp-controller="User">
+        <div class="col-lg-3 col-xl-3">
+            <form method="post" asp-action="PlaceBid" asp-controller="User" asp-route-lotId="@Model.Id">
                 <div class="d-grid">
-                    <input asp-for="Id" hidden />
-                    <button type="submit" class="btn btn-lg btn-dark rounded-0">Сделать ставку</button>
+                    <button type="submit" class="btn btn-lg btn-dark rounded-0">Ставка +@Model.PriceInfo.BidStep</button>
                 </div>
             </form>
         </div>
     }
 </div>
 <div class="row justify-content-center">
-    <div class="col-lg-10 col-xl-8">
+    <div class="col-lg-10 col-xl-9">
         <div class="card my-3 rounded-0">
             <div class="card-body">
                 <h4 class="card-title mb-3">Информация о лоте</h4>
@@ -106,22 +126,33 @@
 @if (DateTime.Now > Model.StartDate && Model.Bids.Count > 0)
 {
     <div class="row justify-content-center">
-        <div class="col-lg-10 col-xl-8">
+        <div class="col-lg-10 col-xl-9">
             <p>
                 <h4>История ставок:</h4>
             </p>
         </div>
     </div>
-    <div class="row justify-content-center my-3">
-        <div class="col-lg-10 col-xl-8">
-            <ul class="list-group rounded-0">
-                @for (int bidNumber = 0; bidNumber < Model.Bids.Count; bidNumber++)
+    <div class="row justify-content-center mt-3">
+        <div class="col-lg-10 col-xl-9">
+            <ul class="list-group mb-4 rounded-0">
+                @foreach (Bid bid in Model.Bids)
                 {
-                    <li class="list-group-item w-100 d-flex justify-content-between">
-                        <span class="h6 my-0 py-1">#@(bidNumber + 1)</span>
-                        <span class="h6 my-0 py-1">@Model.Bids[bidNumber].Time.ToShortDateString()</span>
-                        <span class="badge bg-dark"><span class="my-0 h6">@Model.Bids[bidNumber].BidTimePrice руб.</span></span>
-                    </li>
+                    if (bid.BidTimePrice == Model.PriceInfo.CurrentPrice)
+                    {
+                        <li class="list-group-item w-100 d-flex bg-secondary text-light justify-content-between bg">
+                            <span class="h6 my-0 py-1">@bid.User.UserName</span>
+                            <span class="h6 my-0 py-1">@bid.Time.ToShortDateString()</span>
+                            <span class="badge bg-dark"><span class="my-0 h6">@bid.BidTimePrice руб.</span></span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="list-group-item w-100 d-flex justify-content-between">
+                            <span class="h6 my-0 py-1">@bid.User.UserName</span>
+                            <span class="h6 my-0 py-1">@bid.Time.ToShortDateString()</span>
+                            <span class="badge bg-dark"><span class="my-0 h6">@bid.BidTimePrice руб.</span></span>
+                        </li>
+                    }
                 }
             </ul>
         </div>

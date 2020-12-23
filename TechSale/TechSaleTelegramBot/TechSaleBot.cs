@@ -10,12 +10,11 @@ namespace TechSaleTelegramBot
 
         private readonly TelegramBotClient telegramBot;
 
-        public TechSaleBot()
+        public TechSaleBot(string token)
         {
-            //bot token
-            //telegramBot = new TelegramBotClient("");
-            //telegramBot.OnMessage += Bot_OnMessage;
-            //telegramBot.StartReceiving();
+            telegramBot = new TelegramBotClient(token);
+            telegramBot.OnMessage += Bot_OnMessage;
+            telegramBot.StartReceiving();
         }
 
         public async Task SendMessage(string msg, string chatId)

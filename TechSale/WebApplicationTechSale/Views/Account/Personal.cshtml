@@ -72,8 +72,9 @@
                 <div class="card h-100 rounded-0">
                     <img src="@auctionLot.PhotoSrc" class="card-img-top rounded-0" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title"><a>@auctionLot.Name</a></h5>
-                        <p class="card-text">@auctionLot.Name</p>
+                        <a class="auction-link" asp-action="OpenLot" asp-controller="User" asp-route-id="@auctionLot.Id">
+                            <h5 class="card-title">@auctionLot.Name</h5>
+                        </a>
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Текущая цена: @auctionLot.PriceInfo.CurrentPrice руб.</li>
@@ -83,4 +84,14 @@
         }
     </div>
     <pagination page-model="@Model.PersonalLotsList.PageViewModel" page-action="Personal" page-controller="Account"></pagination>
+}
+else if (User.IsInRole("regular user"))
+{
+    <div class="row justify-content-center my-2">
+        <div class="col-md-6 col-lg-4">
+            <p>
+                <a asp-action="CreateLot" asp-controller="User" class="btn btn-dark d-block rounded-0">Создайте свой первый лот</a>
+            </p>
+        </div>
+    </div>
 }
