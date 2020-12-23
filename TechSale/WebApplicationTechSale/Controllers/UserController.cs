@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using TechSaleTelegramBot;
 using WebApplicationTechSale.HelperServices;
 using WebApplicationTechSale.Models;
 
@@ -23,15 +24,18 @@ namespace WebApplicationTechSale.Controllers
         private readonly IWebHostEnvironment environment;
         private readonly ISavedLogic savedListLogic;
         private readonly UserManager<User> userManager;
+        private readonly IBot telegramBot;
 
         public UserController(ICrudLogic<AuctionLot> lotLogic, IWebHostEnvironment environment,
-            UserManager<User> userManager, ICrudLogic<Bid> bidLogic, ISavedLogic savedListLogic)
+            UserManager<User> userManager, ICrudLogic<Bid> bidLogic, ISavedLogic savedListLogic,
+            IBot telegramBot)
         {
             this.lotLogic = lotLogic;
             this.environment = environment;
             this.userManager = userManager;
             this.bidLogic = bidLogic;
             this.savedListLogic = savedListLogic;
+            this.telegramBot = telegramBot;
         }
 
         [HttpGet]
@@ -141,8 +145,9 @@ namespace WebApplicationTechSale.Controllers
                     {
                         Id = lotId
                     }))?.First(),
-                    User = await userManager.FindByEmailAsync(User.Identity.Name)
+                    User = await userManager.FindByNameAsync(User.Identity.Name)
                 });
+                await SendNotifications(lotId, User.Identity.Name);
                 return View("Redirect", new RedirectModel
                 {
                     InfoMessages = RedirectionMessageProvider.BidPlacedMessages(),
@@ -151,6 +156,40 @@ namespace WebApplicationTechSale.Controllers
                 });
             }
             return NotFound();
+        }
+
+        private async Task SendNotifications(string lotId, string userName)
+        {
+            AuctionLot auctionLot = (await lotLogic.Read(new AuctionLot 
+            { 
+                Id = lotId 
+            })).First();
+
+            List<Bid> bids = await bidLogic.Read(new Bid
+            {
+                AuctionLotId = lotId
+            });
+
+
+            List<User> users = new List<User>();
+
+            foreach (Bid bid in bids)
+            {
+                if (!string.IsNullOrWhiteSpace(bid.User.TelegramChatId)
+                    &&!users.Contains(bid.User) 
+                    && userName != bid.User.UserName)
+                {
+                    users.Add(bid.User);
+                }
+            }
+
+            foreach (User user in users)
+            {
+                await telegramBot.SendMessage(
+                    $"Новая ставка в лоте '{auctionLot.Name}', " +
+                    $"текущая цена {auctionLot.PriceInfo.CurrentPrice}", 
+                    user.TelegramChatId);
+            }
         }
 
         [HttpPost]

@@ -39,7 +39,11 @@ namespace WebApplicationTechSale.Controllers
         {
             if (ModelState.IsValid)
             {
-                User moderator = new User { Email = model.Email, UserName = model.Email };
+                User moderator = new User 
+                { 
+                    Email = model.Email, 
+                    UserName = model.UserName 
+                };
                 var registerResult = await userManager.CreateAsync(moderator, model.Password);
                 if (registerResult.Succeeded)
                 {

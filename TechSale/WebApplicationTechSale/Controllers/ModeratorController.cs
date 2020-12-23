@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TechSaleTelegramBot;
 using WebApplicationTechSale.HelperServices;
 using WebApplicationTechSale.Models;
 
@@ -18,14 +19,16 @@ namespace WebApplicationTechSale.Controllers
         private readonly IPagination<AuctionLot> paginationLotLogic;
         private readonly ICrudLogic<AuctionLot> crudLotLogic;
         private readonly ICrudLogic<Note> crudNoteLogic;
-
+        private readonly IBot telegramBot;
 
         public ModeratorController(IPagination<AuctionLot> paginationLotLogic, 
-            ICrudLogic<AuctionLot> crudLotLogic, ICrudLogic<Note> crudNoteLogic)
+            ICrudLogic<AuctionLot> crudLotLogic, ICrudLogic<Note> crudNoteLogic,
+            IBot telegramBot)
         {
             this.paginationLotLogic = paginationLotLogic;
             this.crudLotLogic = crudLotLogic;
             this.crudNoteLogic = crudNoteLogic;
+            this.telegramBot = telegramBot;
         }
 
         [HttpGet]
@@ -75,6 +78,7 @@ namespace WebApplicationTechSale.Controllers
                     Id = id,
                     Status = LotStatusProvider.GetAcceptedStatus()
                 });
+                await SendAcceptMessage(id);
                 return View("Redirect", new RedirectModel
                 {
                     InfoMessages = RedirectionMessageProvider.LotAcceptedMessages(),
@@ -83,6 +87,22 @@ namespace WebApplicationTechSale.Controllers
                 });
             }
             return NotFound();
+        }
+
+        private async Task SendAcceptMessage(string lotId)
+        {
+            AuctionLot lot = (await crudLotLogic.Read(new AuctionLot
+            {
+                Id = lotId
+            })).First();
+
+            if (!string.IsNullOrEmpty(lot.User.TelegramChatId))
+            {
+                await telegramBot.SendMessage(
+                    $"Ваш лот '{lot.Name}' успешно прошел модерацию!" +
+                    $" Теперь он опубликован на сайте и виден всем пользователям",
+                    lot.User.TelegramChatId);
+            }
         }
 
         [HttpPost]
@@ -100,6 +120,7 @@ namespace WebApplicationTechSale.Controllers
                     AuctionLotId = model.AuctionLot.Id,
                     Text = model.RejectNote
                 });
+                await SendRejectMessage(model.AuctionLot.Id, model.RejectNote);
                 return View("Redirect", new RedirectModel
                 {
                     InfoMessages = RedirectionMessageProvider.LotRejectedMessages(),
@@ -109,6 +130,22 @@ namespace WebApplicationTechSale.Controllers
             }
             model.Expanded = true;
             return View("CheckLot", model);
+        }
+
+        private async Task SendRejectMessage(string lotId, string note)
+        {
+            AuctionLot lot = (await crudLotLogic.Read(new AuctionLot
+            {
+                Id = lotId
+            })).First();
+
+            if (!string.IsNullOrEmpty(lot.User.TelegramChatId))
+            {
+                await telegramBot.SendMessage(
+                    $"Публикация вашего лота '{lot.Name}' отклонена модератором." +
+                    $" Причина, по которой ваш лот не прошел модерацию: {note}",
+                    lot.User.TelegramChatId);
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TechSaleTelegramBot;
 using WebApplicationTechSale.HelperServices;
 using WebApplicationTechSale.Models;
 
@@ -17,14 +18,16 @@ namespace WebApplicationTechSale.Controllers
         private readonly SignInManager<User> signInManager;
         private readonly IPagination<AuctionLot> lotLogic;
         private readonly ISavedLogic savedListLogic;
+        private readonly IBot telegramBot;
 
         public AccountController(IPagination<AuctionLot> lotLogic, ISavedLogic savedListLogic,
-            UserManager<User> userManager, SignInManager<User> signInManager)
+            UserManager<User> userManager, SignInManager<User> signInManager, IBot telegramBot)
         {
             this.lotLogic = lotLogic;
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.savedListLogic = savedListLogic;
+            this.telegramBot = telegramBot;
         }
 
         [Authorize]
@@ -60,10 +63,10 @@ namespace WebApplicationTechSale.Controllers
                         HttpContext.RequestServices.GetService(typeof(IPasswordHasher<User>)) as IPasswordHasher<User>;
 
                     IdentityResult result =
-                        await _passwordValidator.ValidateAsync(userManager, user, model.NewPassword);
+                        await _passwordValidator.ValidateAsync(userManager, user, model.OldPassword);
                     if (result.Succeeded)
                     {
-                        user.PasswordHash = _passwordHasher.HashPassword(user, model.NewPassword);
+                        user.PasswordHash = _passwordHasher.HashPassword(user, model.OldPassword);
                         await userManager.UpdateAsync(user);
                         return RedirectToAction("Personal");
                     }
@@ -106,6 +109,7 @@ namespace WebApplicationTechSale.Controllers
 
             PersonalAccountViewModel model = new PersonalAccountViewModel
             {
+                UserName = user.UserName,
                 Email = user.Email,
                 TelegramId = user.TelegramUsername,
                 PersonalLotsList = new AuctionLotsViewModel
@@ -193,7 +197,7 @@ namespace WebApplicationTechSale.Controllers
                 User user = new User
                 {
                     Email = model.Email,
-                    UserName = model.Email,
+                    UserName = model.UserName,
                     TelegramUsername = string.IsNullOrWhiteSpace(model.TelegramId) ?
                     string.Empty : model.TelegramId
                 };
@@ -215,6 +219,64 @@ namespace WebApplicationTechSale.Controllers
                     foreach (var error in registerResult.Errors)
                     {
                         ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Update()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(UpdateAccountViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                User userToUpdate = await userManager.FindByNameAsync(User.Identity.Name);
+                if (model.NewEmail == userToUpdate.Email 
+                    || !string.IsNullOrWhiteSpace(model.NewTelegramUserName) 
+                    && !string.IsNullOrWhiteSpace(userToUpdate.TelegramUsername) 
+                    && model.NewTelegramUserName != userToUpdate.TelegramUsername)
+                {
+                    ModelState.AddModelError(string.Empty, "Новые данные не должны совпадать со старыми");
+                }
+                else
+                {
+                    userToUpdate.Email = model.NewEmail;
+
+                    if (string.IsNullOrWhiteSpace(model.NewTelegramUserName))
+                    {
+                        userToUpdate.TelegramUsername = string.Empty;
+
+                        if (!string.IsNullOrWhiteSpace(userToUpdate.TelegramChatId))
+                        {
+                            await telegramBot.SendMessage("Вы отписались от уведомлений через сайт", userToUpdate.TelegramChatId);
+                            userToUpdate.TelegramChatId = string.Empty;
+                        }
+                    }
+
+                    var updateResult = await userManager.UpdateAsync(userToUpdate);
+                    if (updateResult.Succeeded)
+                    {
+                        return View("Redirect", new RedirectModel
+                        {
+                            InfoMessages = RedirectionMessageProvider.AccountUpdatedMessages(),
+                            RedirectUrl = "/Account/Personal",
+                            SecondsToRedirect = ApplicationConstantsProvider.GetShortRedirectionTime()
+                        });
+                    }
+
+                    else
+                    {
+                        foreach (var error in updateResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
                     }
                 }
             }

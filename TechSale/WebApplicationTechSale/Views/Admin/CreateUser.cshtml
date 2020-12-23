@@ -3,31 +3,41 @@
     ViewData["Title"] = "Create Moder";
 }
 
-<div class="container col-sm-10 offset-sm-1 col-md-6 offset-md-3 col-xl-4 offset-xl-4 col-12">
-    <div class="card my-4">
-        <div class="card-body">
-            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-info btn-block">Вернуться&nbsp;на&nbsp;главную</a>
-            <h5 class="text-center my-4">Создайте учетную&nbsp;запись модератора</h5>
-            <form asp-action="CreateUser" asp-controller="Admin">
-                <div class="form-group">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control">
-                    <ul class="pl-3">
-                        <li><small>не менее 8 символов</small></li>
-                        <li><small>минимум 1 буква в верхнем регистре</small></li>
-                        <li><small>минимум 1 цифра</small></li>
-                    </ul>
-                </div>
-                <div class="form-group">
-                    <label asp-for="PasswordConfirmation"></label>
-                    <input asp-for="PasswordConfirmation" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-dark btn-block btn-lg">Создать учетную запись</button>
-            </form>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card my-3 rounded-0">
+            <div class="card-body">
+                <h5 class="card-title text-center my-3">Зарегистрируйте&nbsp;модератора</h5>
+                <form method="post" asp-action="CreateUser" asp-controller="Moderator">
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control rounded-0">
+                        <div class="form-text">Например, mail@example.com</div>
+                        <span class="text-danger" asp-validation-for="Email"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="UserName" class="form-label"></label>
+                        <input asp-for="UserName" class="form-control rounded-0">
+                        <div class="form-text">Не менее 4-х символов</div>
+                        <span class="text-danger" asp-validation-for="UserName"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control rounded-0">
+                        <div class="form-text">Не менее 8 символов, не менее 1 цифры, хотя бы 1 буква в нижнем регистре, хотя бы 1 буква в верхнем регистре</div>
+                        <span class="text-danger" asp-validation-for="Password"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="PasswordConfirmation" class="form-label"></label>
+                        <input asp-for="PasswordConfirmation" class="form-control rounded-0">
+                        <span class="text-danger" asp-validation-for="PasswordConfirmation"></span>
+                    </div>
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-lg btn-dark rounded-0">Создать учетную запись</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

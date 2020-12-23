@@ -52,5 +52,14 @@ namespace WebApplicationTechSale.HelperServices
                 "Сейчас вы будете перенаправлены на страницу лота, где сможете увидеть вашу ставку"
             };
         }
+
+        public static List<string> AccountUpdatedMessages()
+        {
+            return new List<string>()
+            {
+                "Изменения сохранены",
+                "Сейчас вы будете перенаправлены в личный кабинет"
+            };
+        }
     }
 }

@@ -56,9 +56,12 @@ namespace DataAccessLogic.CrudLogic
 
         public async Task<List<Bid>> Read(Bid model)
         {
-            return await context.Bids.Include(bid => bid.User).Where(bid => model == null
-            || !string.IsNullOrWhiteSpace(model.AuctionLotId) && bid.AuctionLotId == model.AuctionLotId)
-            .OrderByDescending(bid => bid.BidTimePrice).ToListAsync();
+            return await context.Bids.Include(bid => bid.User)
+            .Where(bid => model == null
+            || !string.IsNullOrWhiteSpace(model.AuctionLotId) 
+            && bid.AuctionLotId == model.AuctionLotId)
+            .OrderByDescending(bid => bid.BidTimePrice)
+            .ToListAsync();
         }
     }
 }

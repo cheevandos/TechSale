@@ -26,9 +26,9 @@ namespace WebApplicationTechSale
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IUserValidator<User>, UserValidator>();
             services.AddDbContext<ApplicationContext>(options =>
             options.UseSqlServer(Configuration["LocalDBConnectionString"]));
-
             services.AddTransient<ICrudLogic<AuctionLot>, AuctionLotLogic>();
             services.AddTransient<ICrudLogic<User>, UserLogic>();
             services.AddTransient<ICrudLogic<Note>, NoteLogic>();
@@ -36,12 +36,16 @@ namespace WebApplicationTechSale
             services.AddTransient<ISavedLogic, SavedListLogic>();
             services.AddTransient<IPagination<AuctionLot>, AuctionLotLogic>();
             services.AddSingleton<IBot, TechSaleBot>(bot => new TechSaleBot(Configuration["BotToken"]));
-            //services.AddHostedService<BotHostService>();
+            services.AddHostedService<BotHostService>();
 
             services.AddIdentity<User, IdentityRole>(options => 
             {
+                options.User.RequireUniqueEmail = true;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireDigit = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
             })
             .AddEntityFrameworkStores<ApplicationContext>();
 
