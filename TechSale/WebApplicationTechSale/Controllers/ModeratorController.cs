@@ -117,6 +117,10 @@ namespace WebApplicationTechSale.Controllers
                     Id = model.AuctionLot.Id,
                     Status = LotStatusProvider.GetRejectedStatus()
                 });
+                await crudNoteLogic.Delete(new Note
+                {
+                    AuctionLotId = model.AuctionLot.Id
+                });
                 await crudNoteLogic.Create(new Note
                 {
                     AuctionLotId = model.AuctionLot.Id,

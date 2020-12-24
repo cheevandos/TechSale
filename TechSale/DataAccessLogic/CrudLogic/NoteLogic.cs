@@ -1,8 +1,8 @@
 ﻿using DataAccessLogic.DatabaseModels;
 using DataAccessLogic.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccessLogic.CrudLogic
@@ -35,9 +35,21 @@ namespace DataAccessLogic.CrudLogic
             await context.SaveChangesAsync();
         }
 
-        public Task Delete(Note model)
+        public async Task Delete(Note model)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(model.AuctionLotId))
+            {
+                throw new Exception("Лот не определен");
+            }
+
+            Note noteToDelete = await context.Notes.FirstOrDefaultAsync(note =>
+            note.AuctionLotId == model.AuctionLotId);
+
+            if (noteToDelete != null)
+            {
+                context.Notes.Remove(noteToDelete);
+                await context.SaveChangesAsync();
+            }
         }
 
         public Task<List<Note>> Read(Note model)
