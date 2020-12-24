@@ -11,9 +11,15 @@ namespace WebApplicationTechSale.HelperServices
         {
             string email = configuration["AdminEmail"];
             string password = configuration["AdminPassword"];
+            string username = configuration["AdminUsername"];
             if (await userManager.FindByEmailAsync(email) == null)
             {
-                User admin = new User { Email = email, UserName = email };
+                User admin = new User 
+                { 
+
+                    Email = email, 
+                    UserName = username 
+                };
                 var registerResult = await userManager.CreateAsync(admin, password);
                 if (registerResult.Succeeded)
                 {

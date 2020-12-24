@@ -12,13 +12,28 @@ namespace WebApplicationTechSale.HelperServices
         {
             List<IdentityError> errors = new List<IdentityError>();
 
-            User existingEmail = manager.FindByEmailAsync(user.Email).Result;
-            if (existingEmail != null)
+            if (user.UserName == user.Email)
             {
                 errors.Add(new IdentityError
                 {
-                    Description = "Данный Email уже используется"
+                    Description = "Имя пользователя и адрес электронной почты не должны совпадать"
                 });
+            }
+
+            if (user.Email.Contains(ApplicationConstantsProvider.AvoidValidationCode()))
+            {
+                user.Email = user.Email.Replace(ApplicationConstantsProvider.AvoidValidationCode(), string.Empty);
+            }
+            else
+            {
+                User existingEmail = manager.FindByEmailAsync(user.Email).Result;
+                if (existingEmail != null)
+                {
+                    errors.Add(new IdentityError
+                    {
+                        Description = "Данный Email уже используется"
+                    });
+                }
             }
 
             if (user.UserName.Contains(ApplicationConstantsProvider.AvoidValidationCode())) 
@@ -35,14 +50,6 @@ namespace WebApplicationTechSale.HelperServices
                         Description = "Имя пользователя занято"
                     });
                 }
-            }
-
-            if (user.UserName.Contains("admin") || user.UserName.Contains("moderator"))
-            {
-                errors.Add(new IdentityError
-                {
-                    Description = "Ник пользователя не должен содержать слова 'admin'"
-                });
             }
 
             return Task.FromResult(errors.Count == 0 ?

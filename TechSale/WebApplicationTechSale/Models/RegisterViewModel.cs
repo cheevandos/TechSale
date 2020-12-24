@@ -21,8 +21,7 @@ namespace WebApplicationTechSale.Models
         [Required(ErrorMessage = "Введите пароль")]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,16}$",
-            ErrorMessage = "Ненадежный пароль")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,16}$", ErrorMessage = "Ненадежный пароль")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Подтвердите пароль")]

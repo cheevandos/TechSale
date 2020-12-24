@@ -32,19 +32,9 @@ namespace WebApplicationTechSale.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> ChangePassword()
+        public IActionResult ChangePassword()
         {
-            User user = await userManager.FindByIdAsync(userManager.FindByNameAsync(User.Identity.Name).Result.Id.ToString());
-            if (user == null)
-            {
-                return NotFound();
-            }
-            ChangePasswordViewModel model = new ChangePasswordViewModel
-            {
-                Id = user.Id,
-                Email = user.Email
-            };
-            return View(model);
+            return View();
         }
 
         [Authorize]
@@ -54,33 +44,31 @@ namespace WebApplicationTechSale.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await userManager.FindByIdAsync(model.Id);
-                if (user != null)
+                if (model.OldPassword == model.NewPassword)
                 {
-                    var _passwordValidator =
-                        HttpContext.RequestServices.GetService(typeof(IPasswordValidator<User>)) as IPasswordValidator<User>;
-                    var _passwordHasher =
-                        HttpContext.RequestServices.GetService(typeof(IPasswordHasher<User>)) as IPasswordHasher<User>;
+                    ModelState.AddModelError(string.Empty, "Новый и старый пароли не должны совпадать");
+                    return View(model);
+                }
 
-                    IdentityResult result =
-                        await _passwordValidator.ValidateAsync(userManager, user, model.OldPassword);
-                    if (result.Succeeded)
+                User user = await userManager.FindByNameAsync(User.Identity.Name);
+
+                user.UserName += ApplicationConstantsProvider.AvoidValidationCode();
+                user.Email += ApplicationConstantsProvider.AvoidValidationCode();
+
+                var changePasswordResult = await userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+                if (changePasswordResult.Succeeded)
+                {
+                    return View("Redirect", new RedirectModel
                     {
-                        user.PasswordHash = _passwordHasher.HashPassword(user, model.OldPassword);
-                        await userManager.UpdateAsync(user);
-                        return RedirectToAction("Personal");
-                    }
-                    else
-                    {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError(string.Empty, error.Description);
-                        }
-                    }
+                        InfoMessages = RedirectionMessageProvider.AccountUpdatedMessages(),
+                        RedirectUrl = "/Account/Personal",
+                        SecondsToRedirect = ApplicationConstantsProvider.GetShortRedirectionTime()
+                    });
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Пользователь не найден");
+                    ModelState.AddModelError(string.Empty, "Вы ввели неверный старый пароль");
                 }
             }
             return View(model);
@@ -235,12 +223,14 @@ namespace WebApplicationTechSale.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "regular user")]
         [HttpGet]
         public IActionResult Update()
         {
             return View();
         }
 
+        [Authorize(Roles = "regular user")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(UpdateAccountViewModel model)
