@@ -229,5 +229,105 @@ namespace WebApplicationTechSale.Controllers
             }
             return NotFound();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> EditLot(string id)
+        {
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                AuctionLot lotToEdit = (await lotLogic.Read(new AuctionLot { Id = id })).First();
+                if (lotToEdit.Status == LotStatusProvider.GetRejectedStatus()
+                    || lotToEdit.Status == LotStatusProvider.GetAcceptedStatus()
+                    && DateTime.Now < lotToEdit.StartDate)
+                {
+                    if (lotToEdit.Status == LotStatusProvider.GetRejectedStatus())
+                    {
+                        ViewBag.RejectNote = "Причина, по которой ваш лот не был опубликован: " 
+                            + lotToEdit.Note.Text;
+                    }
+                    else
+                    {
+                        ViewBag.RejectNote = string.Empty;
+                    }
+                    return View(new EditLotViewModel
+                    {
+                        Id = lotToEdit.Id,
+                        BidStep = lotToEdit.PriceInfo.BidStep,
+                        Description = lotToEdit.Description,
+                        Name = lotToEdit.Name,
+                        OldName = lotToEdit.Name,
+                        StartDate = lotToEdit.StartDate,
+                        EndDate = lotToEdit.EndDate,
+                        StartPrice = lotToEdit.PriceInfo.StartPrice,
+                        OldPhotoSrc = lotToEdit.PhotoSrc
+                    });
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditLot(EditLotViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (string.IsNullOrWhiteSpace(model.Id))
+                {
+                    return NotFound();
+                }
+
+                AuctionLot lotToEdit = new AuctionLot
+                {
+                    Id = model.Id,
+                    Name = model.Name,
+                    Description = model.Description,
+                    StartDate = model.StartDate.Value,
+                    EndDate = model.EndDate.Value,
+                    Status = LotStatusProvider.GetOnModerationStatus(),
+                    PriceInfo = new PriceInfo
+                    {
+                        StartPrice = model.StartPrice.Value,
+                        BidStep = model.BidStep.Value
+                    }
+                };
+
+                string oldPath = $"{environment.WebRootPath + Path.GetDirectoryName(model.OldPhotoSrc)}";
+                if (Directory.Exists(oldPath))
+                {
+                    Directory.Delete(oldPath, true);
+                }
+
+                string newPath = $"/images/{User.Identity.Name}/{model.Name}";
+
+                if (!Directory.Exists($"{environment.WebRootPath + newPath}"))
+                {
+                    Directory.CreateDirectory($"{environment.WebRootPath + newPath}");
+                }
+
+                newPath += $"/photo{Path.GetExtension(model.Photo.FileName)}";
+
+                using (FileStream fs = new FileStream($"{environment.WebRootPath + newPath}", FileMode.Create))
+                {
+                    await model.Photo.CopyToAsync(fs);
+                }
+
+                lotToEdit.PhotoSrc = newPath;
+
+                await lotLogic.Update(lotToEdit);
+
+                return View("Redirect", new RedirectModel
+                {
+                    InfoMessages = RedirectionMessageProvider.LotUpdatedMessages(),
+                    RedirectUrl = "/Home/Lots",
+                    SecondsToRedirect = ApplicationConstantsProvider.GetMaxRedirectionTime()
+                });
+            }
+            return View(model);
+        }
     }
 }

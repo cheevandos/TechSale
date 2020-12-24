@@ -69,6 +69,7 @@ namespace WebApplicationTechSale.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AcceptLot(string id)
         {
             if (!string.IsNullOrWhiteSpace(id))
@@ -106,6 +107,7 @@ namespace WebApplicationTechSale.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> RejectLot(LotModerationModel model)
         {
             if (ModelState.IsValid)

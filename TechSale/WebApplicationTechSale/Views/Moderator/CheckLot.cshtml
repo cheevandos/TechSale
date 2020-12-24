@@ -7,26 +7,26 @@
                 <p class="card-title text-center h4 mb-4">Внимательно проверьте все данные!</p>
                 <p class="card-text">Если все поля заполнены корректно и&nbsp;соответствуют правилам размещения лотов, нажмите кнопку &laquo;Опубликовать&raquo;</p>
                 <p class="card-text">Если хотя&nbsp;бы одно из&nbsp;полей не&nbsp;соответствует правилам размещения лотов, нажмите кнопку &laquo;Отклонить&raquo;</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="card-text">
+                            <p class="h5">Название:</p>
+                            <p class="mb-0">@Model.AuctionLot.Name</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="card-text">
+                            <p class="h5">Описание лота:</p>
+                            <p class="mb-0">@Model.AuctionLot.Description</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="card-text">
+                            <p class="h5">Фотография товара:</p>
+                        </div>
+                    </li>
+                </ul>
             </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    <div class="card-text">
-                        <p class="h5">Название:</p>
-                        <p class="mb-0">@Model.AuctionLot.Name</p>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="card-text">
-                        <p class="h5">Описание лота:</p>
-                        <p class="mb-0">@Model.AuctionLot.Description</p>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="card-text">
-                        <p class="h5">Фотография товара:</p>
-                    </div>
-                </li>
-            </ul>
             <img src="@Model.AuctionLot.PhotoSrc" class="card-img-bottom rounded-0" alt="...">
         </div>
     </div>

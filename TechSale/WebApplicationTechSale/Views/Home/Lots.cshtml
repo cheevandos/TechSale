@@ -11,35 +11,18 @@
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 my-lg-2">
     @foreach (AuctionLot auctionLot in Model.AuctionLots)
     {
-        <div class="col">
-            <div class="card h-100 rounded-0">
-                <img src="@auctionLot.PhotoSrc" class="card-img-top rounded-0" alt="...">
-                <div class="card-body">
-                    <a class="auction-link" asp-action="OpenLot" asp-controller="User" asp-route-id="@auctionLot.Id">
-                        <h5 class="card-title">@auctionLot.Name</h5>
-                    </a>
-                    <p class="card-text text-wrap">@auctionLot.Description</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    @if (DateTime.Now > auctionLot.StartDate && DateTime.Now < auctionLot.EndDate)
-                    {
-                        <li class="list-group-item">До конца: <span class="active-lot">@Math.Round((auctionLot.EndDate - DateTime.Now).TotalSeconds)</span></li>
-                        <li class="list-group-item">Текущая цена: @auctionLot.PriceInfo.CurrentPrice руб.</li>
-                    }
-                    else if (DateTime.Now < auctionLot.StartDate)
-                    {
-                        <li class="list-group-item">Начало: <span class="time-left">@auctionLot.StartDate.ToShortDateString()</span></li>
-                        <li class="list-group-item">Текущая цена: @auctionLot.PriceInfo.StartPrice руб.</li>
-                    }
-                    else
-                    {
-                        <li class="list-group-item">Торги окончены @auctionLot.EndDate.ToShortDateString()</li>
-                        <li class="list-group-item">Цена закрытия: @auctionLot.PriceInfo.CurrentPrice руб.</li>
-                    }
-                    <li class="list-group-item">Продавец: @auctionLot.User.UserName</li>
-                </ul>
-            </div>
-        </div>
+        @if (DateTime.Now > auctionLot.StartDate && DateTime.Now < auctionLot.EndDate)
+        {
+            await Html.RenderPartialAsync("ActiveLot", auctionLot);
+        }
+        else if (DateTime.Now < auctionLot.StartDate)
+        {
+            await Html.RenderPartialAsync("NotStartedLot", auctionLot);
+        }
+        else
+        {
+            await Html.RenderPartialAsync("EndedLot", auctionLot);
+        }
     }
 </div>
 

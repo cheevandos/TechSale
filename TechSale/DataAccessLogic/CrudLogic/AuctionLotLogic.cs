@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccessLogic.CrudLogic
@@ -76,25 +75,26 @@ namespace DataAccessLogic.CrudLogic
                 throw new Exception("Лот не найден");
             }
             
-            if (!string.IsNullOrWhiteSpace(model.Status))
+            if (model.PriceInfo != null)
             {
-                toUpdate.Status = model.Status;
+                toUpdate.PriceInfo.StartPrice = model.PriceInfo.StartPrice == 0 
+                    ? toUpdate.PriceInfo.StartPrice : model.PriceInfo.StartPrice;
+                toUpdate.PriceInfo.BidStep = model.PriceInfo.BidStep == 0
+                    ? toUpdate.PriceInfo.BidStep : model.PriceInfo.BidStep;
             }
-            else
-            {
-                toUpdate.Name = model.Name;
-                toUpdate.Description = model.Description;
-                toUpdate.StartDate = model.StartDate;
-                toUpdate.EndDate = model.EndDate;
-                toUpdate.PhotoSrc = model.PhotoSrc;
-            }
+            toUpdate.Status = string.IsNullOrWhiteSpace(model.Status) ? toUpdate.Status : model.Status;
+            toUpdate.Name = string.IsNullOrWhiteSpace(model.Name) ? toUpdate.Name : model.Name;
+            toUpdate.Description = string.IsNullOrWhiteSpace(model.Description) ? toUpdate.Description : model.Description;
+            toUpdate.StartDate = model.StartDate == null ? toUpdate.StartDate : model.StartDate;
+            toUpdate.EndDate = model.EndDate == null ? toUpdate.EndDate : model.EndDate;
+            toUpdate.PhotoSrc = string.IsNullOrWhiteSpace(model.PhotoSrc) ? toUpdate.PhotoSrc : model.PhotoSrc;
 
             await context.SaveChangesAsync();
         }
 
         public async Task<List<AuctionLot>> Read(AuctionLot model)
         {
-            return await context.AuctionLots.Include(lot => lot.User).Where(lot => model == null
+            return await context.AuctionLots.Include(lot => lot.User).Include(lot => lot.Note).Where(lot => model == null
             || model.User != null && !string.IsNullOrWhiteSpace(model.User.UserName) && lot.User.UserName == model.User.UserName
             || !string.IsNullOrWhiteSpace(model.Id) && lot.Id == model.Id
             || !string.IsNullOrWhiteSpace(model.Status) && lot.Status == model.Status)
