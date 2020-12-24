@@ -1,4 +1,5 @@
 ﻿using DataAccessLogic.DatabaseModels;
+using DataAccessLogic.HelperServices;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,13 +21,20 @@ namespace WebApplicationTechSale.HelperServices
                 });
             }
 
-            User existingUserName = manager.FindByNameAsync(user.UserName).Result;
-            if (existingUserName != null)
+            if (user.UserName.Contains(ApplicationConstantsProvider.AvoidValidationCode())) 
             {
-                errors.Add(new IdentityError
+                user.UserName = user.UserName.Replace(ApplicationConstantsProvider.AvoidValidationCode(), string.Empty);
+            }
+            else
+            {
+                User existingUserName = manager.FindByNameAsync(user.UserName).Result;
+                if (existingUserName != null)
                 {
-                    Description = "Имя пользователя занято"
-                });
+                    errors.Add(new IdentityError
+                    {
+                        Description = "Имя пользователя занято"
+                    });
+                }
             }
 
             if (user.UserName.Contains("admin") || user.UserName.Contains("moderator"))

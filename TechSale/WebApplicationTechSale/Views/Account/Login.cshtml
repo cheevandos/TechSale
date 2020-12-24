@@ -8,12 +8,12 @@
                 <form method="post" asp-action="Login" asp-controller="Account">
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="mb-3">
-                        <label asp-for="Email" class="form-label">Адрес электронной почты</label>
-                        <input asp-for="Email" class="form-control rounded-0">
-                        <span class="text-danger" asp-validation-for="Email"></span>
+                        <label asp-for="Login" class="form-label"></label>
+                        <input asp-for="Login" class="form-control rounded-0">
+                        <span class="text-danger" asp-validation-for="Login"></span>
                     </div>
                     <div class="mb-3">
-                        <label asp-for="Password" class="form-label">Пароль</label>
+                        <label asp-for="Password" class="form-label"></label>
                         <input asp-for="Password" class="form-control rounded-0">
                         <span class="text-danger" asp-validation-for="Password"></span>
                     </div>

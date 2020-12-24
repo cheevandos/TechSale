@@ -21,5 +21,10 @@
         {
             return 15;
         }
+
+        public static string AvoidValidationCode()
+        {
+            return "8951d9e2-e41b-47d5-a8b4-f26d9065fc2d";
+        }
     }
 }

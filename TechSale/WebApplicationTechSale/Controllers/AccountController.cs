@@ -137,8 +137,18 @@ namespace WebApplicationTechSale.Controllers
         {
             if (ModelState.IsValid)
             {
-                var loginResult = await signInManager.PasswordSignInAsync(model.Email,
-                    model.Password, model.RememberMe, false);
+                Microsoft.AspNetCore.Identity.SignInResult loginResult;
+                User user = await userManager.FindByEmailAsync(model.Login);
+                if (user != null)
+                {
+                    loginResult = await signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+                }
+                else
+                {
+                    user = await userManager.FindByNameAsync(model.Login);
+                    loginResult = await signInManager.PasswordSignInAsync(model.Login, model.Password, model.RememberMe, false);
+                }
+
                 if (loginResult.Succeeded)
                 {
                     if (!string.IsNullOrWhiteSpace(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
@@ -147,7 +157,7 @@ namespace WebApplicationTechSale.Controllers
                     }
                     else
                     {
-                        User user = await userManager.FindByEmailAsync(model.Email);
+
                         if (await userManager.IsInRoleAsync(user, "admin"))
                         {
                             return RedirectToAction("UsersList", "Admin");
@@ -238,16 +248,12 @@ namespace WebApplicationTechSale.Controllers
             if (ModelState.IsValid)
             {
                 User userToUpdate = await userManager.FindByNameAsync(User.Identity.Name);
-                if (model.NewEmail == userToUpdate.Email 
-                    || !string.IsNullOrWhiteSpace(model.NewTelegramUserName) 
-                    && !string.IsNullOrWhiteSpace(userToUpdate.TelegramUsername) 
-                    && model.NewTelegramUserName != userToUpdate.TelegramUsername)
+                if (model.NewEmail == userToUpdate.Email)
                 {
-                    ModelState.AddModelError(string.Empty, "Новые данные не должны совпадать со старыми");
+                    ModelState.AddModelError(string.Empty, "Новый email не должен совпадать со старыми");
                 }
                 else
                 {
-                    userToUpdate.Email = model.NewEmail;
 
                     if (string.IsNullOrWhiteSpace(model.NewTelegramUserName))
                     {
@@ -260,8 +266,10 @@ namespace WebApplicationTechSale.Controllers
                         }
                     }
 
-                    var updateResult = await userManager.UpdateAsync(userToUpdate);
-                    if (updateResult.Succeeded)
+                    userToUpdate.UserName += ApplicationConstantsProvider.AvoidValidationCode();
+                    var updateEmailResult = await userManager.SetEmailAsync(userToUpdate, model.NewEmail);
+
+                    if (updateEmailResult.Succeeded)
                     {
                         return View("Redirect", new RedirectModel
                         {
@@ -270,12 +278,11 @@ namespace WebApplicationTechSale.Controllers
                             SecondsToRedirect = ApplicationConstantsProvider.GetShortRedirectionTime()
                         });
                     }
-
                     else
                     {
-                        foreach (var error in updateResult.Errors)
+                        foreach (var emailUpdateError in updateEmailResult.Errors)
                         {
-                            ModelState.AddModelError(string.Empty, error.Description);
+                            ModelState.AddModelError(string.Empty, emailUpdateError.Description);
                         }
                     }
                 }
