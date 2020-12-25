@@ -10,7 +10,7 @@ namespace WebApplicationTechSale.HelperServices
         public static async Task InitializeRolesAsync(RoleManager<IdentityRole> roleManager,
             IConfiguration configuration)
         {
-            List<string> roles = new List<string>(configuration["BaseRoles"].Split(','));
+            List<string> roles = new List<string>(configuration["BaseRolesAzure"].Split(','));
 
             foreach (var role in roles)
             {

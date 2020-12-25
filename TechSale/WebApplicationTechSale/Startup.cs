@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TechSaleTelegramBot;
 using WebApplicationTechSale.HelperServices;
-using WebApplicationTechSale.Models;
+using Microsoft.Extensions.Logging.AzureAppServices;
 
 namespace WebApplicationTechSale
 {
@@ -28,14 +28,14 @@ namespace WebApplicationTechSale
         {
             services.AddTransient<IUserValidator<User>, UserValidator>();
             services.AddDbContext<ApplicationContext>(options =>
-            options.UseSqlServer(Configuration["LocalDBConnectionString"]));
+            options.UseSqlServer(Configuration["RemoteDatabaseAzure"]));
             services.AddTransient<ICrudLogic<AuctionLot>, AuctionLotLogic>();
             services.AddTransient<ICrudLogic<User>, UserLogic>();
             services.AddTransient<ICrudLogic<Note>, NoteLogic>();
             services.AddTransient<ICrudLogic<Bid>, BidLogic>();
             services.AddTransient<ISavedLogic, SavedListLogic>();
             services.AddTransient<IPagination<AuctionLot>, AuctionLotLogic>();
-            services.AddSingleton<IBot, TechSaleBot>(bot => new TechSaleBot(Configuration["BotToken"]));
+            services.AddSingleton<IBot, TechSaleBot>(bot => new TechSaleBot(Configuration["BotTokenAzure"]));
             services.AddHostedService<BotHostService>();
 
             services.AddIdentity<User, IdentityRole>(options => 

@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+
 namespace WebApplicationTechSale.Models
 {
     public class CreateUserViewModel
@@ -14,12 +13,13 @@ namespace WebApplicationTechSale.Models
         [DataType(DataType.Text)]
         [MinLength(4, ErrorMessage = "Слишком короткое имя пользователя")]
         [Display(Name = "Имя пользователя")]
+        [RegularExpression("^[а-яА-ЯёЁa-zA-Z0-9]+$", ErrorMessage = "Допустимы только буквы и цифры")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Введите пароль")]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,16}$",
+        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,16}$",
             ErrorMessage = "Ненадежный пароль")]
         public string Password { get; set; }
 

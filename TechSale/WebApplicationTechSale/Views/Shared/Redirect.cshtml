@@ -1,4 +1,8 @@
-﻿@model  RedirectModel
+﻿@{
+    ViewData["Title"] = "Перенаправление...";
+}
+
+@model RedirectModel
 
 <div class="row justify-content-center">
     <div class="col-md-8">
@@ -13,21 +17,21 @@
                         <p class="card-text">@message</p>
                     }
                 }
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <p class="card-text text-center">Перенаправление через <span id="timeToRedirect">@Model.SecondsToRedirect</span> сек.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p class="card-text text-center">Если перенаправления не произошло, нажмите <a class="redirect-link" href="@Model.RedirectUrl">сюда</a></p>
+                    </li>
+                </ul>
             </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    <p class="card-text text-center">Перенаправление через <span id="timeToRedirect">@Model.SecondsToRedirect</span> сек.</p>
-                </li>
-                <li class="list-group-item">
-                    <p class="card-text text-center">Если перенаправления не произошло, нажмите <a class="redirect-link" href="@Model.RedirectUrl">сюда</a></p>
-                </li>
-            </ul>
         </div>
     </div>
 </div>
 
 @section Scripts {
-<script>
+    <script>
     let sec = @Model.SecondsToRedirect;
 
     function RedirectionTimer() {
@@ -43,5 +47,5 @@
 
     RedirectionTimer();
     setInterval(RedirectionTimer, 1000);
-</script>
+    </script>
 }

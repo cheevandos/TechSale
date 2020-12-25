@@ -27,7 +27,6 @@ namespace WebApplicationTechSale
                     var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
                     var configuration = provider.GetRequiredService<IConfiguration>();
 
-
                     await RoleInitializer.InitializeRolesAsync(roleManager, configuration);
                     await AdminInitializer.InitializeAdmin(userManager, configuration);
                 } 

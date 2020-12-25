@@ -72,5 +72,15 @@ namespace WebApplicationTechSale.HelperServices
                 "Сейчас вы будете перенаправлены в личный кабинет"
             };
         }
+
+        public static List<string> AuctionTimeUpMessages()
+        {
+            return new List<string>()
+            {
+                "К сожалению, торги окончены...",
+                "Ваша ставка не была засчитана",
+                "Сейчас вы будете перенаправлены на страницу лота"
+            };
+        }
     }
 }

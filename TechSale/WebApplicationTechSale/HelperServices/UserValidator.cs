@@ -11,6 +11,7 @@ namespace WebApplicationTechSale.HelperServices
         public Task<IdentityResult> ValidateAsync(UserManager<User> manager, User user)
         {
             List<IdentityError> errors = new List<IdentityError>();
+            string avoidValidationCode = ApplicationConstantsProvider.AvoidValidationCode();
 
             if (user.UserName == user.Email)
             {
@@ -20,9 +21,9 @@ namespace WebApplicationTechSale.HelperServices
                 });
             }
 
-            if (user.Email.Contains(ApplicationConstantsProvider.AvoidValidationCode()))
+            if (user.Email.Contains(avoidValidationCode))
             {
-                user.Email = user.Email.Replace(ApplicationConstantsProvider.AvoidValidationCode(), string.Empty);
+                user.Email = user.Email.Replace(avoidValidationCode, string.Empty);
             }
             else
             {
@@ -36,9 +37,9 @@ namespace WebApplicationTechSale.HelperServices
                 }
             }
 
-            if (user.UserName.Contains(ApplicationConstantsProvider.AvoidValidationCode())) 
+            if (user.UserName.Contains(avoidValidationCode)) 
             {
-                user.UserName = user.UserName.Replace(ApplicationConstantsProvider.AvoidValidationCode(), string.Empty);
+                user.UserName = user.UserName.Replace(avoidValidationCode, string.Empty);
             }
             else
             {

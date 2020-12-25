@@ -25,6 +25,12 @@ namespace DataAccessLogic.CrudLogic
                 throw new Exception("Пользователь не определен");
             }
 
+            if (model.EndDate <= model.StartDate)
+            {
+                throw new Exception("Дата окончания торгов должна " +
+                    "быть больше даты начала торгов минимум на 1 день");
+            }
+
             AuctionLot sameLot = await context.AuctionLots
                 .Include(lot => lot.User)
                 .FirstOrDefaultAsync(lot =>
@@ -68,6 +74,21 @@ namespace DataAccessLogic.CrudLogic
                 throw new Exception("Лот не определен");
             }
 
+            if (model.EndDate <= model.StartDate)
+            {
+                throw new Exception("Дата окончания торгов должна " +
+                    "быть больше даты начала торгов минимум на 1 день");
+            }
+
+            AuctionLot sameLot = await context.AuctionLots
+            .Include(lot => lot.User)
+            .FirstOrDefaultAsync(lot =>
+            lot.User.UserName == model.User.UserName && lot.Name == model.Name);
+            if (sameLot != null)
+            {
+                throw new Exception("Уже есть лот с таким названием");
+            }
+
             AuctionLot toUpdate = await context.AuctionLots.FirstOrDefaultAsync(lot =>
             lot.Id == model.Id); 
             if (toUpdate == null)
@@ -85,8 +106,8 @@ namespace DataAccessLogic.CrudLogic
             toUpdate.Status = string.IsNullOrWhiteSpace(model.Status) ? toUpdate.Status : model.Status;
             toUpdate.Name = string.IsNullOrWhiteSpace(model.Name) ? toUpdate.Name : model.Name;
             toUpdate.Description = string.IsNullOrWhiteSpace(model.Description) ? toUpdate.Description : model.Description;
-            toUpdate.StartDate = model.StartDate == null ? toUpdate.StartDate : model.StartDate;
-            toUpdate.EndDate = model.EndDate == null ? toUpdate.EndDate : model.EndDate;
+            toUpdate.StartDate = model.StartDate == DateTime.MinValue ? toUpdate.StartDate : model.StartDate;
+            toUpdate.EndDate = model.EndDate == DateTime.MinValue ? toUpdate.EndDate : model.EndDate;
             toUpdate.PhotoSrc = string.IsNullOrWhiteSpace(model.PhotoSrc) ? toUpdate.PhotoSrc : model.PhotoSrc;
 
             await context.SaveChangesAsync();

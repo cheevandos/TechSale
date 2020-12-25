@@ -68,23 +68,29 @@ namespace WebApplicationTechSale.Controllers
                     }
                 };
 
-                string path = $"/images/{User.Identity.Name}/{model.Name}";
+                string dbPhotoPath = $"/images/{User.Identity.Name}/{model.Name}/photo{Path.GetExtension(model.Photo.FileName)}";
+                toAdd.PhotoSrc = dbPhotoPath;
 
-                if (!Directory.Exists($"{environment.WebRootPath + path}"))
+                try
                 {
-                    Directory.CreateDirectory($"{environment.WebRootPath + path}");
+                   await lotLogic.Create(toAdd);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    return View(model);
                 }
 
-                path += $"/photo{Path.GetExtension(model.Photo.FileName)}";
+                string physicalDirectory = Path.GetDirectoryName($"{environment.WebRootPath + dbPhotoPath}");
+                if (!Directory.Exists(physicalDirectory))
+                {
+                    Directory.CreateDirectory(physicalDirectory);
+                }
 
-                using (FileStream fs = new FileStream($"{environment.WebRootPath + path}", FileMode.Create))
+                using (FileStream fs = new FileStream($"{environment.WebRootPath + dbPhotoPath}", FileMode.Create))
                 {
                     await model.Photo.CopyToAsync(fs);
                 }
-
-                toAdd.PhotoSrc = path;
-
-                await lotLogic.Create(toAdd);
 
                 return View("Redirect", new RedirectModel
                 {
@@ -139,14 +145,29 @@ namespace WebApplicationTechSale.Controllers
         {
             if (!string.IsNullOrWhiteSpace(lotId))
             {
-                await bidLogic.Create(new Bid
+                User user = await userManager.FindByNameAsync(User.Identity.Name);
+                try
                 {
-                    AuctionLot = (await lotLogic.Read(new AuctionLot
+                    await bidLogic.Create(new Bid
                     {
-                        Id = lotId
-                    }))?.First(),
-                    User = await userManager.FindByNameAsync(User.Identity.Name)
-                });
+                        AuctionLot = (await lotLogic.Read(new AuctionLot
+                        {
+                            Id = lotId
+                        }))?.First(),
+                        User = user
+                    });
+                } catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    return View("Redirect", new RedirectModel
+                    {
+                        InfoMessages = RedirectionMessageProvider.AuctionTimeUpMessages(),
+                        RedirectUrl = $"/User/OpenLot/?id={lotId}",
+                        SecondsToRedirect = ApplicationConstantsProvider.GetShortRedirectionTime()
+                    });
+                }
+                AuctionLot lotToAdd = new AuctionLot { Id = lotId };
+                await savedListLogic.Add(user, lotToAdd);
                 await SendNotifications(lotId, User.Identity.Name);
                 return View("Redirect", new RedirectModel
                 {
@@ -296,29 +317,36 @@ namespace WebApplicationTechSale.Controllers
                     }
                 };
 
+                string newDbPath = $"/images/{User.Identity.Name}/{model.Name}/photo{Path.GetExtension(model.Photo.FileName)}";
+                lotToEdit.PhotoSrc = newDbPath;
+
+                try
+                {
+                    await lotLogic.Update(lotToEdit);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    return View(model);
+                }
+
                 string oldPath = $"{environment.WebRootPath + Path.GetDirectoryName(model.OldPhotoSrc)}";
                 if (Directory.Exists(oldPath))
                 {
                     Directory.Delete(oldPath, true);
                 }
 
-                string newPath = $"/images/{User.Identity.Name}/{model.Name}";
+                string newPhysicalDirectory = Path.GetDirectoryName($"{environment.WebRootPath + newDbPath}");
 
-                if (!Directory.Exists($"{environment.WebRootPath + newPath}"))
+                if (!Directory.Exists(newPhysicalDirectory))
                 {
-                    Directory.CreateDirectory($"{environment.WebRootPath + newPath}");
+                    Directory.CreateDirectory(newPhysicalDirectory);
                 }
 
-                newPath += $"/photo{Path.GetExtension(model.Photo.FileName)}";
-
-                using (FileStream fs = new FileStream($"{environment.WebRootPath + newPath}", FileMode.Create))
+                using (FileStream fs = new FileStream($"{environment.WebRootPath + newDbPath}", FileMode.Create))
                 {
                     await model.Photo.CopyToAsync(fs);
                 }
-
-                lotToEdit.PhotoSrc = newPath;
-
-                await lotLogic.Update(lotToEdit);
 
                 return View("Redirect", new RedirectModel
                 {

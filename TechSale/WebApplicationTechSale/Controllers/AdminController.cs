@@ -1,11 +1,9 @@
 ﻿using DataAccessLogic.DatabaseModels;
+using DataAccessLogic.HelperServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WebApplicationTechSale.Models;
 
@@ -35,6 +33,7 @@ namespace WebApplicationTechSale.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser(CreateUserViewModel model)
         {
             if (ModelState.IsValid)
@@ -47,6 +46,8 @@ namespace WebApplicationTechSale.Controllers
                 var registerResult = await userManager.CreateAsync(moderator, model.Password);
                 if (registerResult.Succeeded)
                 {
+                    moderator.Email += ApplicationConstantsProvider.AvoidValidationCode();
+                    moderator.UserName += ApplicationConstantsProvider.AvoidValidationCode();
                     await userManager.AddToRoleAsync(moderator, "moderator");
                     return RedirectToAction("UsersList");
                 }

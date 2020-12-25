@@ -30,7 +30,9 @@ namespace DataAccessLogic.CrudLogic
         public async Task<List<User>> Read(User model)
         {
             return await context.Users.Where(user => (model == null)
-            || (!string.IsNullOrWhiteSpace(model.UserName) && user.UserName == model.UserName))
+            || (!string.IsNullOrWhiteSpace(model.UserName) && user.UserName == model.UserName)
+            || (!string.IsNullOrWhiteSpace(model.TelegramUsername) 
+            && user.TelegramUsername == model.TelegramUsername))
             .ToListAsync();
         }
 

@@ -13,32 +13,17 @@ namespace WebApplicationTechSale.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IBot bot;
-        private readonly ICrudLogic<User> userLogic;
         private readonly IPagination<AuctionLot> lotLogic;
 
-        public HomeController(IPagination<AuctionLot> lotLogic, IBot bot, ICrudLogic<User> userLogic)
+        public HomeController(IPagination<AuctionLot> lotLogic)
         {
             this.lotLogic = lotLogic;
-            this.bot = bot;
-            this.userLogic = userLogic;
         }
 
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> SendMessageToBot(string msg)
+        [HttpGet]
+        public IActionResult Rules()
         {
-            User user = (await userLogic.Read(new User
-            {
-                UserName = User.Identity.Name
-            }))?.First();
-
-            if (user != null && !string.IsNullOrWhiteSpace(user.TelegramChatId))
-            {
-                await bot.SendMessage(msg, user.TelegramChatId);
-            }
-
-            return RedirectToAction("Index", "Home");
+            return View();
         }
 
         [HttpGet]
