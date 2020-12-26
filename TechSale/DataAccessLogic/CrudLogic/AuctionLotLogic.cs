@@ -74,19 +74,24 @@ namespace DataAccessLogic.CrudLogic
                 throw new Exception("Лот не определен");
             }
 
-            if (model.EndDate <= model.StartDate)
+            if (model.EndDate != DateTime.MinValue 
+                && model.StartDate != DateTime.MinValue 
+                && model.EndDate <= model.StartDate)
             {
                 throw new Exception("Дата окончания торгов должна " +
                     "быть больше даты начала торгов минимум на 1 день");
             }
 
-            AuctionLot sameLot = await context.AuctionLots
-            .Include(lot => lot.User)
-            .FirstOrDefaultAsync(lot =>
-            lot.User.UserName == model.User.UserName && lot.Name == model.Name);
-            if (sameLot != null)
+            if (model.User != null)
             {
-                throw new Exception("Уже есть лот с таким названием");
+                AuctionLot sameLot = await context.AuctionLots
+                .Include(lot => lot.User)
+                .FirstOrDefaultAsync(lot =>
+                lot.User.UserName == model.User.UserName && lot.Name == model.Name);
+                if (sameLot != null)
+                {
+                    throw new Exception("Уже есть лот с таким названием");
+                }
             }
 
             AuctionLot toUpdate = await context.AuctionLots.FirstOrDefaultAsync(lot =>
