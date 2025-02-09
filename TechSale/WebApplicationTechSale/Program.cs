@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApplicationTechSale.HelperServices;
 
@@ -33,14 +32,14 @@ namespace WebApplicationTechSale
                 catch (Exception ex)
                 {
                     var logger = provider.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "Произошла ошибка при работе с БД");
+                    logger.LogError(ex, "РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР°");
                 }
             }
 
-            host.Run();
+            await host.RunAsync();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

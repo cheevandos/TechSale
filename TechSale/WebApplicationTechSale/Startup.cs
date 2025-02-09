@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TechSaleTelegramBot;
 using WebApplicationTechSale.HelperServices;
-using Microsoft.Extensions.Logging.AzureAppServices;
 
 namespace WebApplicationTechSale
 {
