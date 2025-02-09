@@ -27,7 +27,9 @@ namespace WebApplicationTechSale
         {
             services.AddTransient<IUserValidator<User>, UserValidator>();
             services.AddDbContext<ApplicationContext>(options =>
-            options.UseSqlServer(Configuration["RemoteDatabaseAzure"]));
+            {
+                options.UseSqlServer(Configuration["RemoteDatabaseAzure"]);
+            });
             services.AddTransient<ICrudLogic<AuctionLot>, AuctionLotLogic>();
             services.AddTransient<ICrudLogic<User>, UserLogic>();
             services.AddTransient<ICrudLogic<Note>, NoteLogic>();
